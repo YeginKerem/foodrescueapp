@@ -1,13 +1,14 @@
 from django.db import models
-from django.contrib.auth.hashers import make_password
+from django.contrib.auth.hashers import check_password, make_password
+from django.contrib.auth.models import UserManager
 
 class Donor(models.Model):
-    Username = models.CharField(max_length=100)
-    Password = models.CharField(max_length=128) 
-    Phonenumber = models.CharField(max_length=15)
-    Email = models.EmailField(unique=True)
-    DonorId = models.AutoField(primary_key=True)
-    CreatedAt = models.DateTimeField(auto_now_add=True)
+    username = models.CharField(max_length=100)
+    password = models.CharField(max_length=128) 
+    phonenumber = models.CharField(max_length=15)
+    email = models.EmailField(unique=True)
+    donorId = models.AutoField(primary_key=True)
+    createdAt = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=False)  
 
     def save(self, *args, **kwargs):
@@ -18,15 +19,16 @@ class Donor(models.Model):
 
     def __str__(self):
         return self.Username
+        
 
 
 class User(models.Model):
-    Username = models.CharField(max_length=100)
-    Password = models.CharField(max_length=128)  
-    Phonenumber = models.CharField(max_length=15)
-    Email = models.EmailField(unique=True)
-    CustomerId = models.AutoField(primary_key=True)
-    CreatedAt = models.DateTimeField(auto_now_add=True)
+    username = models.CharField(max_length=100)
+    password = models.CharField(max_length=128)  
+    phonenumber = models.CharField(max_length=15,)
+    email = models.EmailField(unique=True)
+    customerId = models.AutoField(primary_key=True)
+    createdAt = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=False)  
     is_admin = models.BooleanField(default=False) 
     name = models.CharField(max_length=50, blank=True, null=True) 
@@ -38,15 +40,32 @@ class User(models.Model):
             self.Password = make_password(self.Password)
         super(User, self).save(*args, **kwargs)
 
+    def check_password(self, raw_password):
+        """
+        Kullanıcının şifresini doğrulamak için raw_password'ü hashlenmiş şifreyle karşılaştırır.
+        """
+        return check_password(raw_password, self.password)
+    
+    def create_user(self, username, email, password, phonenumber, **extra_fields):
+
+        # Şifreyi hash'leyelim
+        password = make_password(password)
+
+        user = self.models(username=username, email=email, password=password, phonenumber=phonenumber, **extra_fields)
+        user.save()
+        return user
+
+
     def __str__(self):
-        return self.Username
+        return self.username
+    
 
 class Donation(models.Model):
-    Donor = models.ForeignKey(Donor, on_delete=models.CASCADE)
+    donor = models.ForeignKey(Donor, on_delete=models.CASCADE)
     ItemId = models.AutoField(primary_key=True)
-    DonationDate = models.DateTimeField(auto_now_add=True)
-    ExpiryDate = models.DateField() 
-    Quantity = models.PositiveIntegerField() 
+    donationDate = models.DateTimeField(auto_now_add=True)
+    expiryDate = models.DateField() 
+    quantity = models.PositiveIntegerField() 
 
     def str(self):
         return f"{self.donor.username} - {self.item_id}"
