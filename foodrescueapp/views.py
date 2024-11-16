@@ -1,4 +1,4 @@
 from django.shortcuts import render
 
-def sayfa_1(request):
+def index(request):
     return render(request, 'app/Sayfa-1.html')

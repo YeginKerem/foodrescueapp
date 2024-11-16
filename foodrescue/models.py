@@ -40,3 +40,13 @@ class User(models.Model):
 
     def __str__(self):
         return self.Username
+
+class Donation(models.Model):
+    Donor = models.ForeignKey(Donor, on_delete=models.CASCADE)
+    ItemId = models.AutoField(primary_key=True)
+    DonationDate = models.DateTimeField(auto_now_add=True)
+    ExpiryDate = models.DateField() 
+    Quantity = models.PositiveIntegerField() 
+
+    def str(self):
+        return f"{self.donor.username} - {self.item_id}"

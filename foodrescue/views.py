@@ -18,3 +18,4 @@ def user_list(request):
 def user_detail(request, user_id):
     user = User.objects.get(id=user_id)  # Belirli bir kullanıcıyı alıyoruz
     return render(request, 'user_detail.html', {'user': user})  # Template'e gönderiyoruz
+

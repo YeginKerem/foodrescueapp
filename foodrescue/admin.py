@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Donor, User
+from .models import Donor, User, Donation
 
 @admin.register(Donor)
 class DonorAdmin(admin.ModelAdmin):
@@ -16,3 +16,10 @@ class UserAdmin(admin.ModelAdmin):
     search_fields = ('Username', 'Email', 'name', 'surname')
     ordering = ('-CreatedAt',)
     readonly_fields = ('CreatedAt',)
+    
+@admin.register(Donation)
+class DonationsAdmin(admin.ModelAdmin):
+    list_display = ('ItemId', 'Donor', 'ExpiryDate', 'DonationDate', 'Quantity')  
+    list_filter = ('ExpiryDate', 'ItemId') 
+    search_fields = ('ItemId',)  
+    ordering = ('-DonationDate',)  
