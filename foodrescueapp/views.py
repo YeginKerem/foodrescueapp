@@ -1,5 +1,5 @@
 from django.shortcuts import redirect, render
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import login, logout
 from django.contrib import messages
 from foodrescue import models
 
@@ -75,7 +75,7 @@ def register_request(request):
                               })
             else:
                 # Kullanıcıyı create_user ile oluşturuyoruz
-                user = models.User.objects.create_user(
+                user = models.User.create_user(
                     username=username,
                     email=email,
                     password=password,

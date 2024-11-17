@@ -12,9 +12,8 @@ class Donor(models.Model):
     is_active = models.BooleanField(default=False)  
 
     def save(self, *args, **kwargs):
-        # Şifreyi şifrele
-        if not self.Password.startswith('pbkdf2_'):
-            self.Password = make_password(self.Password)
+       
+        self.Password = make_password(self.Password)
         super(Donor, self).save(*args, **kwargs)
 
     def __str__(self):
@@ -34,11 +33,19 @@ class User(models.Model):
     name = models.CharField(max_length=50, blank=True, null=True) 
     surname = models.CharField(max_length=50, blank=True, null=True)  
 
-    def save(self, *args, **kwargs):
-        # Şifreyi şifrele
-        if not self.Password.startswith('pbkdf2_'):
-            self.Password = make_password(self.Password)
-        super(User, self).save(*args, **kwargs)
+    @classmethod
+    def create_user(cls, username, email, password, phonenumber, name, surname, is_active=False):
+        user = cls(
+            username=username,
+            email=email,
+            password=make_password(password),
+            phonenumber=phonenumber,
+            name=name,
+            surname=surname,
+            is_active=is_active,
+        )
+        user.save()
+        return user
 
     def check_password(self, raw_password):
         """
@@ -46,14 +53,7 @@ class User(models.Model):
         """
         return check_password(raw_password, self.password)
     
-    def create_user(self, username, email, password, phonenumber, **extra_fields):
-
-        # Şifreyi hash'leyelim
-        password = make_password(password)
-
-        user = self.models(username=username, email=email, password=password, phonenumber=phonenumber, **extra_fields)
-        user.save()
-        return user
+    
 
 
     def __str__(self):

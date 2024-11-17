@@ -47,7 +47,7 @@ class Migration(migrations.Migration):
         ),
         migrations.RenameField(
             model_name='donor',
-            old_name='Password',
+            old_name='password',
             new_name='password',
         ),
         migrations.RenameField(
@@ -77,7 +77,7 @@ class Migration(migrations.Migration):
         ),
         migrations.RenameField(
             model_name='user',
-            old_name='Password',
+            old_name='password',
             new_name='password',
         ),
         migrations.RenameField(

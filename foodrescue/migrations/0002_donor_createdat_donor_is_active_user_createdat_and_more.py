@@ -40,12 +40,12 @@ class Migration(migrations.Migration):
         ),
         migrations.AlterField(
             model_name='donor',
-            name='Password',
+            name='password',
             field=models.CharField(max_length=128),
         ),
         migrations.AlterField(
             model_name='user',
-            name='Password',
+            name='password',
             field=models.CharField(max_length=128),
         ),
     ]

@@ -15,7 +15,7 @@ class Migration(migrations.Migration):
             name='Donor',
             fields=[
                 ('Username', models.CharField(max_length=100)),
-                ('Password', models.CharField(max_length=100)),
+                ('password', models.CharField(max_length=100)),
                 ('Phonenumber', models.CharField(max_length=15)),
                 ('Email', models.EmailField(max_length=254, unique=True)),
                 ('DonorId', models.AutoField(primary_key=True, serialize=False)),
@@ -25,7 +25,7 @@ class Migration(migrations.Migration):
             name='User',
             fields=[
                 ('Username', models.CharField(max_length=100)),
-                ('Password', models.CharField(max_length=100)),
+                ('password', models.CharField(max_length=100)),
                 ('Phonenumber', models.CharField(max_length=15)),
                 ('Email', models.EmailField(max_length=254, unique=True)),
                 ('CustomerId', models.AutoField(primary_key=True, serialize=False)),
