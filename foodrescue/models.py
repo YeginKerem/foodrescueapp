@@ -61,11 +61,74 @@ class User(models.Model):
     
 
 class Donation(models.Model):
-    donor = models.ForeignKey(Donor, on_delete=models.CASCADE)
-    ItemId = models.AutoField(primary_key=True)
-    donationDate = models.DateTimeField(auto_now_add=True)
-    expiryDate = models.DateField() 
-    quantity = models.PositiveIntegerField() 
+    id = models.AutoField(primary_key=True)  # Ensure there is a primary key field with a default value
+    item_name = models.CharField(max_length=100, default='Unknown Item')  # Add a default value for item_name
+    quantity = models.IntegerField()
+    expiry_date = models.DateField()
 
-    def str(self):
-        return f"{self.donor.username} - {self.item_id}"
+    @classmethod
+    def create_donate(cls, item, quantity, expiry_date):
+        donation = cls(item_name=item, quantity=quantity, expiry_date=expiry_date)
+        donation.save()
+        return donation
+
+    @classmethod
+    def get_current_donations(cls):
+        return cls.objects.all()
+   
+        
+class DonateOperations(models.Model):
+
+    @staticmethod
+    def create_donate(item, quantity, expiry_date):
+        donation = Donation(item_name=item, quantity=quantity, expiry_date=expiry_date)
+        donation.save()
+        return donation
+
+    @staticmethod
+    def get_current_donations():
+        return Donation.objects.all()
+
+    @staticmethod
+    def delete_donation_by_id(item_id):
+        try:
+            donation = Donation.objects.get(ItemId=item_id)
+            donation.delete()
+            return True
+        except Donation.DoesNotExist:
+            return False
+
+class Feedback(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    feedbackText = models.TextField(null=False, blank=False)  
+    feedbackDate = models.DateField(auto_now_add=True)
+    def __str__(self):
+        return f"Feedback from {self.user.username} at {self.feedbackDate}"
+   
+    @staticmethod
+    def create_feedback(user, feedbackText):
+        feedback = Feedback(
+            user=user,
+            feedbackText=feedbackText
+        )
+        feedback.save()
+        return None
+
+    @staticmethod
+    def update_feedback(user, feedbackText):
+        try:
+            feedback = Feedback.objects.get(user=user)
+            feedback.feedbackText = feedbackText
+            feedback.save()
+            return feedback
+        except Feedback.DoesNotExist:
+            return True
+
+    @staticmethod
+    def delete_feedback(user):
+        try:
+            feedback = Feedback.objects.get(user=user)
+            feedback.delete()
+            return True
+        except Feedback.DoesNotExist:
+            return False

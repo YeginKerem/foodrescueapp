@@ -1,0 +1,27 @@
+<!-- filepath: /c:/Users/kero/Desktop/NEWAPP/foodrescueapp/templates/app/feedback.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback</title>
+    <link rel="stylesheet" href="{% static 'css/feedback.css' %}">
+</head>
+<body>
+    <div class="feedback-container">
+        <h1>Provide Your Feedback</h1>
+        <form id="feedback-form" method="post" >
+            {% csrf_token %}
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+            
+            <label for="message">Message:</label>
+            <textarea id="message" name="message" required></textarea>
+            
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+    <script src="{% static 'js/feedback.js' %}"></script>
+</body>
+</html>

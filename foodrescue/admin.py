@@ -17,9 +17,9 @@ class UserAdmin(admin.ModelAdmin):
     ordering = ('-createdAt',)
     readonly_fields = ('createdAt',)
     
-@admin.register(Donation)
 class DonationsAdmin(admin.ModelAdmin):
-    list_display = ('ItemId', 'donor', 'expiryDate', 'donationDate', 'quantity')  
-    list_filter = ('expiryDate', 'ItemId') 
-    search_fields = ('ItemId',)  
-    ordering = ('-donationDate',)  
+    list_display = ('item_name', 'quantity', 'expiry_date')
+    list_filter = ('expiry_date',)
+    ordering = ('expiry_date',)
+
+admin.site.register(Donation, DonationsAdmin)

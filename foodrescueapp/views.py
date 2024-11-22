@@ -2,6 +2,10 @@ from django.shortcuts import redirect, render
 from django.contrib.auth import login, logout
 from django.contrib import messages
 from foodrescue import models
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+import json
+from datetime import date
 
 def index(request):
     return render(request, 'app/Sayfa-1.html')
@@ -105,3 +109,33 @@ def register_request(request):
 def logout_request(request):
     logout(request)
     return redirect("index")
+
+def donate(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            item = data['item']
+            quantity = data['quantity']
+            expiry_date = data['expiryDate']
+            models.Donation.create_donate(item, quantity, expiry_date)
+            return JsonResponse({'success': True})
+        except KeyError as e:
+            return JsonResponse({'success': False, 'error': str(e)})
+    current_donations = models.Donation.get_current_donations()
+    return render(request, 'app/donate.html', {'donations': current_donations})
+
+
+def feedback(request):
+    if request.method == 'POST':
+        user = request.POST.get('user')
+        feedbackText = request.POST.get('feedbackText')
+        
+        models.Feedback.create_feedback(user=user, feedbackText=feedbackText)
+    
+        
+        return render(request, 'app/feedback.html')
+    return render(request, 'app/feedback.html')
+    
+
+    
+
