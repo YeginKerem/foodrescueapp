@@ -61,13 +61,15 @@ class User(models.Model):
     
 
 class Donation(models.Model):
-    id = models.AutoField(primary_key=True)  # Ensure there is a primary key field with a default value
-    item_name = models.CharField(max_length=100, default='Unknown Item')  # Add a default value for item_name
+    id = models.AutoField(primary_key=True)  
+    item_name = models.CharField(max_length=100, default='Unknown Item')  
     quantity = models.IntegerField()
     expiry_date = models.DateField()
 
     @classmethod
     def create_donate(cls, item, quantity, expiry_date):
+        if int(quantity) >= 100000:
+            raise ValueError("Quantity is too high")
         donation = cls(item_name=item, quantity=quantity, expiry_date=expiry_date)
         donation.save()
         return donation
@@ -82,7 +84,9 @@ class DonateOperations(models.Model):
     @staticmethod
     def create_donate(item, quantity, expiry_date):
         donation = Donation(item_name=item, quantity=quantity, expiry_date=expiry_date)
-        donation.save()
+       
+        
+              
         return donation
 
     @staticmethod

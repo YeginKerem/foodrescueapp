@@ -9,17 +9,17 @@ document.addEventListener('DOMContentLoaded', function() {
         const quantity = document.getElementById('quantity').value;
         const expiryDate = document.getElementById('expiryDate').value;
 
-        // Simulate a server request to save the donation
+       
         const donation = {
             item: item,
             quantity: quantity,
             expiryDate: expiryDate
         };
 
-        // Add the donation to the list
+        
         addDonationToList(donation);
 
-        // Clear the form
+  
         donateForm.reset();
     });
 

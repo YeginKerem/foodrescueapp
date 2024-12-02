@@ -1,4 +1,4 @@
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth import login, logout
 from django.contrib import messages
 from foodrescue import models
@@ -6,10 +6,10 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import json
 from datetime import date
+from django.urls import reverse
 
 def index(request):
     return render(request, 'app/Sayfa-1.html')
-
 def login_request(request):
     if request.method == "POST":
         username = request.POST["username"]
@@ -30,9 +30,6 @@ def login_request(request):
             messages.error(request, "Böyle bir kullanıcı bulunmamaktadır.")
 
     return render(request, "account/login.html")
-
-
-
 def register_request(request):
     if request.method == "POST":
         username = request.POST["username"]
@@ -101,30 +98,32 @@ def register_request(request):
                           })
         
     return render(request, "account/register.html")
-
-
-
-
-
 def logout_request(request):
     logout(request)
     return redirect("index")
-
-def donate(request):
+def create_donation_view(request):
     if request.method == 'POST':
+        item = request.POST.get('item')
+        quantity = request.POST.get('quantity')
+        expiry_date = request.POST.get('expiry_date')
+        
         try:
-            data = json.loads(request.body)
-            item = data['item']
-            quantity = data['quantity']
-            expiry_date = data['expiryDate']
             models.Donation.create_donate(item, quantity, expiry_date)
-            return JsonResponse({'success': True})
-        except KeyError as e:
-            return JsonResponse({'success': False, 'error': str(e)})
-    current_donations = models.Donation.get_current_donations()
-    return render(request, 'app/donate.html', {'donations': current_donations})
-
-
+            return render(request, 'app/donate.html', {
+                'success': 'Donation created successfully!',
+                'donations': models.Donation.get_current_donations()
+            })
+        except ValueError as e:
+            return render(request, 'app/donate.html', {
+                'error': str(e),
+                'donations': models.Donation.get_current_donations()
+            })
+    donations = models.Donation.get_current_donations()
+    return render(request, 'app/donate.html', {'donations': donations})
+def delete_donation_view(request, donation_id):
+    donation = get_object_or_404(models.Donation, id=donation_id)
+    donation.delete()
+    return redirect('create_donation_view')
 def feedback(request):
     if request.method == 'POST':
         user = request.POST.get('user')
@@ -135,7 +134,7 @@ def feedback(request):
         
         return render(request, 'app/feedback.html')
     return render(request, 'app/feedback.html')
-    
 
-    
+
+
 
