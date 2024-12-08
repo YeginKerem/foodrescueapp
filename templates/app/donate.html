@@ -6,6 +6,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Donate</title>
     <link rel="stylesheet" href="{% static 'css/donate.css' %}">
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <style>
+        table.dataTable {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table.dataTable th, table.dataTable td {
+            text-align: left;
+            padding: 10px;
+        }
+        table.dataTable thead th {
+            background-color: #f4f4f4;
+        }
+        table.dataTable tbody tr:hover {
+            background-color: #f9f9f9;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -39,7 +59,7 @@
         </section>
         <section class="donations-list">
             <h2>Current Donations</h2>
-            <table id="donationsTable">
+            <table id="donationsTable" class="display">
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -54,13 +74,22 @@
                         <tr>
                             <td>{{ donation.id }}</td>
                             <td>{{ donation.item_name }}</td>
-                            <td>{{ donation.quantity }}</td>
+                            <td>{{ donation.formatted_quantity }}</td>
                             <td>{{ donation.expiry_date }}</td>
                             <td>
-                                <form method="post" action="{% url 'delete_donation' donation.id %}">
-                                    {% csrf_token %}
-                                    <button type="submit">Delete</button>
-                                </form>
+                                {% if user.is_staff %}
+                                    <!-- Admin için Delete butonu -->
+                                    <form method="post" action="{% url 'delete_donation' donation.id %}" style="display:inline;">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn-delete">Delete</button>
+                                    </form>
+                                {% else %}
+                                    <!-- User için Reservation butonu -->
+                                    <form method="post" action="{% url 'reservation' donation.id %}" style="display:inline;">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn-reservation">Reserve</button>
+                                    </form>
+                                {% endif %}
                             </td>
                         </tr>
                     {% endfor %}
@@ -68,5 +97,23 @@
             </table>
         </section>
     </main>
+    <script>
+        $(document).ready(function () {
+            $('#donationsTable').DataTable({
+                responsive: true,
+                lengthMenu: [5, 10, 25, 50], // Kullanıcıya seçim seçenekleri
+                pageLength: 5, // Varsayılan olarak 5 öğe göster
+                searching: true, // Arama kutusunu etkinleştir
+                order: [[0, 'asc']], // Varsayılan sıralama (ID'ye göre artan)
+                language: {
+                    lengthMenu: "Show _MENU_ items per page",
+                    zeroRecords: "No matching records found",
+                    info: "Showing page _PAGE_ of _PAGES_",
+                    infoEmpty: "No items available",
+                    infoFiltered: "(filtered from _MAX_ total items)"
+                }
+            });
+        });
+    </script>
 </body>
 </html>

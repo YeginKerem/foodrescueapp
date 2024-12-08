@@ -5,8 +5,30 @@
 .u-section-1 .u-image-1 {
   height: 748px;
   margin: 0;
+} 
+
+.login-container {
+    max-width: 400px;
+    margin: 50px auto;
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+.alert {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+.btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #004080;
+}
 .u-section-1 .u-group-1 {
   width: 789px;
   min-height: 387px;

@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.hashers import check_password, make_password
-from django.contrib.auth.models import UserManager
+from django.contrib.auth.models import UserManager, BaseUserManager,AbstractBaseUser
 
 class Donor(models.Model):
     username = models.CharField(max_length=100)
@@ -20,21 +20,45 @@ class Donor(models.Model):
         return self.Username
         
 
-
-class User(models.Model):
-    username = models.CharField(max_length=100)
-    password = models.CharField(max_length=128)  
-    phonenumber = models.CharField(max_length=15,)
+class CustomUserManager(BaseUserManager):
     email = models.EmailField(unique=True)
-    customerId = models.AutoField(primary_key=True)
+    def get_by_natural_key(self, username):
+        return self.get(username=username)
+
+    def create_superuser(self, username, email=None, password=None, **extra_fields):
+        phonenumber = extra_fields.get('phonenumber')
+        name = extra_fields.get('name') 
+        surname = extra_fields.get('surname')
+        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_superuser', True)
+
+        if extra_fields.get('is_staff') is not True:
+            raise ValueError('Superuser must have is_staff=True.')
+        if extra_fields.get('is_superuser') is not True:
+            raise ValueError('Superuser must have is_superuser=True.')
+
+        return User.create_user(username, email=email, password=password, name=name,surname=surname,phonenumber=phonenumber,**extra_fields)
+
+   
+class User(AbstractBaseUser):
+    username = models.CharField(max_length=100, unique=True)
+    password = models.CharField(max_length=128)  
+    is_superuser = models.BooleanField(default=False)
+    phonenumber = models.CharField(max_length=15,blank=True, null=True)
+    email = models.EmailField(blank=True, null=True)
+    customerId = models.AutoField(primary_key=True)  # Remove default value
     createdAt = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=False)  
     is_admin = models.BooleanField(default=False) 
+    is_staff = models.BooleanField(default=False)  # Add this line
     name = models.CharField(max_length=50, blank=True, null=True) 
-    surname = models.CharField(max_length=50, blank=True, null=True)  
-
+    surname = models.CharField(max_length=50, blank=True, null=True) 
+    USERNAME_FIELD = 'username' 
+    objects = CustomUserManager()
+    
+        
     @classmethod
-    def create_user(cls, username, email, password, phonenumber, name, surname, is_active=False):
+    def create_user(cls, username,is_superuser, email, password, phonenumber, name, surname,is_staff, is_active=False):
         user = cls(
             username=username,
             email=email,
@@ -43,6 +67,9 @@ class User(models.Model):
             name=name,
             surname=surname,
             is_active=is_active,
+            is_staff=is_staff,
+            is_superuser=is_superuser
+            
         )
         user.save()
         return user
@@ -53,8 +80,11 @@ class User(models.Model):
         """
         return check_password(raw_password, self.password)
     
-    
+    def has_module_perms(self, app_label):
+        return True
 
+    def has_perm(self, perm, obj=None):
+        return True
 
     def __str__(self):
         return self.username
@@ -62,45 +92,37 @@ class User(models.Model):
 
 class Donation(models.Model):
     id = models.AutoField(primary_key=True)  
-    item_name = models.CharField(max_length=100, default='Unknown Item')  
-    quantity = models.IntegerField()
+    item_name = models.CharField(max_length=100, default='Unknown Item')  # Add this line
+    quantity = models.FloatField()  # Add this line
     expiry_date = models.DateField()
-
+    def formatted_quantity(self):
+        return f"{self.quantity} kg"
+      
+class DonateOperations(models.Model):
+    donation = models.ForeignKey(Donation, on_delete=models.CASCADE, default=1)  # Assuming 1 is a valid Donation ID
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default=1)  # Assuming 1 is a valid User ID
+    
+    
     @classmethod
-    def create_donate(cls, item, quantity, expiry_date):
+    def create_donate(cls, item_name, quantity, expiry_date):
         if int(quantity) >= 100000:
             raise ValueError("Quantity is too high")
-        donation = cls(item_name=item, quantity=quantity, expiry_date=expiry_date)
+        donation = Donation(item_name=item_name,quantity=float(quantity)/1000, expiry_date=expiry_date)
         donation.save()
-        return donation
-
+        return donation    
     @classmethod
     def get_current_donations(cls):
-        return cls.objects.all()
-   
-        
-class DonateOperations(models.Model):
-
-    @staticmethod
-    def create_donate(item, quantity, expiry_date):
-        donation = Donation(item_name=item, quantity=quantity, expiry_date=expiry_date)
-       
-        
-              
-        return donation
-
-    @staticmethod
-    def get_current_donations():
         return Donation.objects.all()
+    
+    def UserReservationSystemById():
 
-    @staticmethod
-    def delete_donation_by_id(item_id):
-        try:
-            donation = Donation.objects.get(ItemId=item_id)
-            donation.delete()
+        if(User.is_active == True):
             return True
-        except Donation.DoesNotExist:
+        else:
             return False
+        
+
+
 
 class Feedback(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

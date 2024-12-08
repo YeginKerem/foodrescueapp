@@ -10,5 +10,8 @@ urlpatterns = [
     path('donate', views.create_donation_view, name='donate'),
     path('feedback/', views.feedback, name='feedback'),
     path('donate/delete/<int:donation_id>/', views.delete_donation_view, name='delete_donation'),
+     path('donate/reservation/<int:donation_id>/', views.create_donation_view, name='reservation'),
     path('create_donation/', views.create_donation_view, name='create_donation_view'),
+    path('feedback/', views.feedback, name='feedback'),
+    path('logout_request', views.logout_request, name='logout'),
 ]

@@ -2,11 +2,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth import login, logout
 from django.contrib import messages
 from foodrescue import models
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-import json
-from datetime import date
-from django.urls import reverse
+
 
 def index(request):
     return render(request, 'app/Sayfa-1.html')
@@ -23,7 +19,7 @@ def login_request(request):
                     return redirect('login')
 
                 login(request, user)  # Django'nun login metodunu kullanıyoruz
-                return redirect("home")
+                return redirect("index")
             else:
                 messages.error(request, "Kullanıcı adı ya da parola yanlış")
         except models.User.DoesNotExist:
@@ -84,6 +80,8 @@ def register_request(request):
                     name=firstname,
                     surname=lastname,
                     is_active=False,
+                    is_staff=False,
+                    is_superuser=False
                 )
                 return redirect("login")
         else:
@@ -108,17 +106,17 @@ def create_donation_view(request):
         expiry_date = request.POST.get('expiry_date')
         
         try:
-            models.Donation.create_donate(item, quantity, expiry_date)
+            models.DonateOperations.create_donate(item_name=item, quantity=quantity, expiry_date=expiry_date)
             return render(request, 'app/donate.html', {
                 'success': 'Donation created successfully!',
-                'donations': models.Donation.get_current_donations()
+                'donations': models.DonateOperations.get_current_donations()
             })
         except ValueError as e:
             return render(request, 'app/donate.html', {
                 'error': str(e),
-                'donations': models.Donation.get_current_donations()
+                'donations': models.DonateOperations.get_current_donations()
             })
-    donations = models.Donation.get_current_donations()
+    donations = models.DonateOperations.get_current_donations()
     return render(request, 'app/donate.html', {'donations': donations})
 def delete_donation_view(request, donation_id):
     donation = get_object_or_404(models.Donation, id=donation_id)
