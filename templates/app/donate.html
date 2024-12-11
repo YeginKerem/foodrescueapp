@@ -43,6 +43,11 @@
                     {{ success }}
                 </div>
             {% endif %}
+            {% if not user.is_authenticated %}
+                <div class="alert alert-warning">
+                    You need to log in to perform this action.
+                </div>
+            {% endif %}
             <form id="donateForm" method="post">
                 {% csrf_token %}
                 <label for="item">Item:</label>
@@ -66,32 +71,49 @@
                         <th>Item</th>
                         <th>Quantity</th>
                         <th>Expiry Date</th>
+                        <th>Reserved By</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for donation in donations %}
+                        {% if not donation.is_reserved or donation.reserved_by == user or user.is_staff %}
                         <tr>
                             <td>{{ donation.id }}</td>
                             <td>{{ donation.item_name }}</td>
                             <td>{{ donation.formatted_quantity }}</td>
                             <td>{{ donation.expiry_date }}</td>
                             <td>
+                                {% if donation.is_reserved %}
+                                    Reserved by {{ donation.reserved_by.username }}
+                                {% else %}
+                                    Not Reserved
+                                {% endif %}
+                            </td>
+                            <td>
                                 {% if user.is_staff %}
-                                    <!-- Admin için Delete butonu -->
                                     <form method="post" action="{% url 'delete_donation' donation.id %}" style="display:inline;">
                                         {% csrf_token %}
                                         <button type="submit" class="btn-delete">Delete</button>
                                     </form>
                                 {% else %}
-                                    <!-- User için Reservation butonu -->
-                                    <form method="post" action="{% url 'reservation' donation.id %}" style="display:inline;">
-                                        {% csrf_token %}
-                                        <button type="submit" class="btn-reservation">Reserve</button>
-                                    </form>
+                                    {% if donation.is_reserved %}
+                                        {% if donation.reserved_by == user %}
+                                            <form method="post" action="{% url 'cancel_reservation' donation.id %}" style="display:inline;">
+                                                {% csrf_token %}
+                                                <button type="submit">Cancel Reservation</button>
+                                            </form>
+                                        {% endif %}
+                                    {% else %}
+                                        <form method="post" action="{% url 'reserve_donation' donation.id %}">
+                                            {% csrf_token %}
+                                            <button type="submit">Reserve</button>
+                                        </form>
+                                    {% endif %}
                                 {% endif %}
                             </td>
                         </tr>
+                        {% endif %}
                     {% endfor %}
                 </tbody>
             </table>
@@ -101,8 +123,8 @@
         $(document).ready(function () {
             $('#donationsTable').DataTable({
                 responsive: true,
-                lengthMenu: [5, 10, 25, 50], // Kullanıcıya seçim seçenekleri
-                pageLength: 5, // Varsayılan olarak 5 öğe göster
+                lengthMenu: [5, 10, 25, 50, 100], // Kullanıcıya seçim seçenekleri
+                pageLength: 20, // Varsayılan olarak 5 öğe göster
                 searching: true, // Arama kutusunu etkinleştir
                 order: [[0, 'asc']], // Varsayılan sıralama (ID'ye göre artan)
                 language: {

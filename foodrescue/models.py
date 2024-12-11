@@ -95,13 +95,18 @@ class Donation(models.Model):
     item_name = models.CharField(max_length=100, default='Unknown Item')  # Add this line
     quantity = models.FloatField()  # Add this line
     expiry_date = models.DateField()
+    is_reserved = models.BooleanField(default=False)  # Add this line
+    reserved_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reserved_donations', null=True, blank=True)  # Add this line
+    
     def formatted_quantity(self):
         return f"{self.quantity} kg"
       
 class DonateOperations(models.Model):
     donation = models.ForeignKey(Donation, on_delete=models.CASCADE, default=1)  # Assuming 1 is a valid Donation ID
     user = models.ForeignKey(User, on_delete=models.CASCADE, default=1)  # Assuming 1 is a valid User ID
-    
+    reserved_at = models.DateTimeField(null=True, blank=True)
+    # Remove is_reserved and reserved_by from here
+   
     
     @classmethod
     def create_donate(cls, item_name, quantity, expiry_date):

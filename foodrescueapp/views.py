@@ -2,7 +2,8 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth import login, logout
 from django.contrib import messages
 from foodrescue import models
-
+from django.contrib.auth.decorators import login_required
+from django.db.models import Q  # Add this import
 
 def index(request):
     return render(request, 'app/Sayfa-1.html')
@@ -99,7 +100,41 @@ def register_request(request):
 def logout_request(request):
     logout(request)
     return redirect("index")
+@login_required
+def reserve_donation_view(request, donation_id):
+    donation = get_object_or_404(models.Donation, id=donation_id)
+    
+    if donation.is_reserved:
+        messages.error(request, "This donation has already been reserved.")
+        return redirect('create_donation_view')
+    
+    donation.is_reserved = True
+    donation.reserved_by = request.user
+    donation.save()
+    
+    messages.success(request, "Donation reserved successfully!")
+    return redirect('create_donation_view')
+@login_required
+def cancel_reservation_view(request, donation_id):
+    donation = get_object_or_404(models.Donation, id=donation_id)
+    
+    if donation.reserved_by != request.user:
+
+        return redirect('create_donation_view')
+    
+    donation.is_reserved = False
+    donation.reserved_by = None
+    donation.save()
+    
+
+    return redirect('create_donation_view')
+
+
+@login_required
 def create_donation_view(request):
+    if not request.user.is_authenticated:
+        messages.warning(request, "You need to log in to perform this action.")
+        return redirect('login')
     if request.method == 'POST':
         item = request.POST.get('item')
         quantity = request.POST.get('quantity')
@@ -116,8 +151,15 @@ def create_donation_view(request):
                 'error': str(e),
                 'donations': models.DonateOperations.get_current_donations()
             })
-    donations = models.DonateOperations.get_current_donations()
+    if request.user.is_staff:
+        donations = models.DonateOperations.get_current_donations()
+    else:
+        donations = models.DonateOperations.get_current_donations().filter(
+            Q(is_reserved=False) | 
+            Q(reserved_by=request.user) 
+        )
     return render(request, 'app/donate.html', {'donations': donations})
+
 def delete_donation_view(request, donation_id):
     donation = get_object_or_404(models.Donation, id=donation_id)
     donation.delete()
