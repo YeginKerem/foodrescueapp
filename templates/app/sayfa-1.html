@@ -22,17 +22,15 @@
 		"logo": "static/img/default-logo.png"
 }</script>
 <style>
-  /* Navbar'ı dikey olarak ortalamak */
   .navbar {
-    height: 8vh; /* Tüm ekran yüksekliğinde merkezlemek için */
+    height: 8vh; 
     display: flex;
-    align-items: center; /* Dikey olarak ortala */
-    justify-content: center; /* Yatay olarak ortala */
+    align-items: center; 
+    justify-content: center; 
   }
 
-  /* <li> etiketleri arasındaki boşluğu artırmak */
   .navbar-nav .nav-item {
-    margin: 0 10px; /* Sağ ve sol boşluk */
+    margin: 0 10px; 
   }
   
 </style>
@@ -66,7 +64,7 @@
             </li>
             {% if user.is_staff %}
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'index' %}">Admin Paneli</a>
+              <a class="nav-link" href="{% url 'admin_panel' %}">Admin Paneli</a>
             </li>
             {% else %}
             <li class="nav-item">
@@ -133,7 +131,7 @@
             
           </span>
                 <h4 class="u-align-center u-text u-text-default u-text-7">Support Network</h4>
-                <p class="u-align-center u-text u-text-8">The second user group consists of individuals facing challenges and requiring assistance, particularly food.</p>
+                <p class="u-align-center u-text u-text-8">User group consists of individuals facing challenges, particularly food.</p>
                 <a href="" class="u-align-center u-btn u-button-style u-hover-palette-1-dark-1 u-palette-2-base u-btn-3">learn more</a>
               </div>
             </div>

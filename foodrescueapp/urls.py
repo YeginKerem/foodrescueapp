@@ -14,4 +14,6 @@ urlpatterns = [
     path('create_donation/', views.create_donation_view, name='create_donation_view'),
     path('feedback/', views.feedback, name='feedback'),
     path('logout_request', views.logout_request, name='logout'),
+    path("admin-panel/", views.admin_panel, name="admin_panel"),  # HTML döndürür
+    path("admin-panel/api/", views.admin_user_api, name="admin_user_api"),  # JSON API
 ]

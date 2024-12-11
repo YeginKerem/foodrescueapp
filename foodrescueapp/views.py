@@ -1,7 +1,63 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth import login, logout
 from django.contrib import messages
-from foodrescue import models
+from foodrescue import models 
+from foodrescue.models import User
+from django.http import JsonResponse
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
+import json
+
+from django.http import JsonResponse
+from django.shortcuts import render
+from django.views.decorators.csrf import csrf_exempt
+import json
+
+
+@csrf_exempt
+def admin_panel(request):
+    # Sadece HTML sayfasını render eder
+    if request.method == "GET":
+        return render(request, "admin_panel/manage_users.html")
+
+@csrf_exempt
+def admin_user_api(request):
+    # JSON verilerini döndürür veya günceller
+    if request.method == "GET":
+        # Kullanıcı verilerini al
+        users = User.objects.all().values(
+            "customerId", "username", "email", "phonenumber", "createdAt", "is_active"
+        )
+        data = list(users)
+        return JsonResponse({"data": data}, safe=False)
+    
+    elif request.method == "POST":
+        # Kullanıcı durumunu güncelleme işlemi
+        try:
+            body = json.loads(request.body)
+            user_id = body.get("id")
+            action = body.get("action")
+            
+            # Kullanıcıyı bul
+            user = User.objects.get(customerId=user_id)
+            
+            # Kullanıcı durumunu güncelle
+            if action == "activate":
+                user.is_active = True
+            elif action == "deactivate":
+                user.is_active = False
+            else:
+                return JsonResponse({"message": "Geçersiz işlem."}, status=400)
+
+            user.save()
+            return JsonResponse({"message": "Kullanıcı durumu başarıyla güncellendi."})
+        except User.DoesNotExist:
+            return JsonResponse({"message": "Kullanıcı bulunamadı."}, status=404)
+        except Exception as e:
+            return JsonResponse({"message": f"Bir hata oluştu: {str(e)}"}, status=500)
+
+
+
 
 
 def index(request):
