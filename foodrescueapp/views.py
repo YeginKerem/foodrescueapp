@@ -121,6 +121,7 @@ def create_donation_view(request):
 def delete_donation_view(request, donation_id):
     donation = get_object_or_404(models.Donation, id=donation_id)
     donation.delete()
+    messages.success(request, 'Bağış başarıyla silindi.')
     return redirect('create_donation_view')
 def feedback(request):
     if request.method == 'POST':

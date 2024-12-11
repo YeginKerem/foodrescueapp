@@ -17,7 +17,7 @@ class Donor(models.Model):
         super(Donor, self).save(*args, **kwargs)
 
     def __str__(self):
-        return self.Username
+        return self.username    
         
 
 class CustomUserManager(BaseUserManager):

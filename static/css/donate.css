@@ -1,15 +1,6 @@
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    margin: 0;
-    padding: 0;
-}
-
-header {
-    background-color: #478ac9;
-    color: white;
-    padding: 1rem;
-    text-align: center;
+    font-family: 'Roboto', sans-serif;
+    background: linear-gradient(to bottom, #f8f9fa, #ffffff);
 }
 
 main {
@@ -17,11 +8,11 @@ main {
 }
 
 .donate-form {
-    background-color: white;
-    padding: 1rem;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    margin-bottom: 2rem;
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #f9f9f9;
 }
 
 .donate-form label {
@@ -30,11 +21,7 @@ main {
 }
 
 .donate-form input {
-    width: 100%;
-    padding: 0.5rem;
-    margin-bottom: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    margin-bottom: 10px;
 }
 
 .donate-form button {
@@ -62,3 +49,39 @@ main {
     padding: 0.5rem 0;
     border-bottom: 1px solid #ccc;
 }
+
+table.dataTable {
+    width: 100%;
+    border-collapse: collapse;
+}
+table.dataTable th, table.dataTable td {
+    text-align: left;
+    padding: 10px;
+}
+table.dataTable thead th {
+    background-color: #f4f4f4;
+}
+table.dataTable tbody tr:hover {
+    background-color: #e9ecef;
+    cursor: pointer;
+}
+
+.alert {
+    margin-bottom: 20px;
+}
+
+.btn-reservation, .btn-delete {
+    margin: 5px;
+}
+
+/* Button customizations */
+.btn-delete {
+    background-color: #dc3545;
+    color: white;
+}
+
+.btn-reservation {
+    background-color: #28a745;
+    color: white;
+}
+

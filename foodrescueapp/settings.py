@@ -79,18 +79,8 @@ WSGI_APPLICATION = 'foodrescueapp.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'mssql',
-        'NAME': 'foodrescue',
-        'USER': 'userkero',
-        'PASSWORD':'123',
-        'HOST':'localhost',
-        'PORT':'1433',
-        'OPTIONS': {
-            'driver': 'ODBC Driver 17 for SQL Server',
-            'trusted_connection': 'yes',
-            'TrustServerCertificate': 'yes',
-        },
-
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
