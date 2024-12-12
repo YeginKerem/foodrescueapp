@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel - Kullanıcılar</title>
+    <title>Admin Panel - Donörler</title>
     <!-- CSS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
@@ -105,7 +105,6 @@
             background-color: #388e3c;
         }
 
-       
         table.dataTable td, table.dataTable th {
             text-align: center; 
             vertical-align: middle;
@@ -128,18 +127,16 @@
 <body>
     <nav class="navbar">
         <div class="container-fluid">
-            <a class="navbar-brand" href="{% url 'index' %}">AnaSayfa</a>
+            <a class="navbar-brand" href="{% url 'index' %}">Ana Sayfa</a>
             <div class="ms-auto">
-                <a href="{% url 'admin_donors'%}" class="navbar-brand">Bağışcı Yönetimi</a>
+                <a href="{% url 'admin_panel' %}" class="navbar-brand">Kullanıcı Yönetimi</a>
             </div>
         </div>
     </nav>
 
-    
-
     <div class="container">
-        <h1>Kullanıcı Yönetimi</h1>
-        <table id="userTable" class="table table-striped table-bordered" style="width:100%">
+        <h1>Bağışçı Yönetimi</h1>
+        <table id="donorTable" class="table table-striped table-bordered" style="width:100%">
             <thead>
                 <tr>
                     <th>ID</th>
@@ -147,23 +144,23 @@
                     <th>Email</th>
                     <th>Telefon Numarası</th>
                     <th>Oluşturulma Tarihi</th>
-                    <th>Aktif Durum</th>
-                    <th>İşlemler</th>
+                    <th>Durum</th>
                 </tr>
             </thead>
         </table>
     </div>
+
     <script>
         $(document).ready(function () {
-            const table = $('#userTable').DataTable({
+            const table = $('#donorTable').DataTable({
                 info: true,
                 ajax: {
-                    url: "/admin-panel/api/",
+                    url: "/admin-panel/donor-api/",
                     type: "GET",
                     dataSrc: "data"
                 },
                 columns: [
-                    { data: "customerId" },
+                    { data: "donorId" },
                     { data: "username" },
                     { data: "email" },
                     { data: "phonenumber" },
@@ -178,16 +175,6 @@
                         data: "is_active",
                         render: function (data) {
                             return data ? "Aktif" : "Pasif";
-                        }
-                    },
-                    {
-                        data: null,
-                        render: function (data) {
-                            if (data.is_active) {
-                                return `<button class="deactivate-btn" data-id="${data.customerId}">Pasifleştir</button>`;
-                            } else {
-                                return `<button class="activate-btn" data-id="${data.customerId}">Aktifleştir</button>`;
-                            }
                         }
                     }
                 ],
@@ -205,27 +192,7 @@
                     url: "//cdn.datatables.net/plug-ins/1.13.5/i18n/tr.json"
                 }
             });
-
-            $(document).on('click', '.activate-btn, .deactivate-btn', function() {
-                const userId = $(this).data('id');
-                const action = $(this).hasClass('activate-btn') ? 'activate' : 'deactivate';
-
-                $.ajax({
-                    url: '/admin-panel/api/',  
-                    type: 'POST',
-                    data: JSON.stringify({ id: userId, action: action }),
-                    contentType: 'application/json',
-                    success: function(response) {
-                        table.ajax.reload();
-                        alert(response.message);
-                    },
-                    error: function(xhr, status, error) {
-                        alert('Bir hata oluştu: ' + xhr.responseText);
-                    }
-                });
-            });
         });
-       
     </script>
 </body>
 </html>
