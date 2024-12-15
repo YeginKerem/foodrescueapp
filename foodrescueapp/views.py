@@ -1,9 +1,90 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth import login, logout
 from django.contrib import messages
-from foodrescue import models
-from django.contrib.auth.decorators import login_required
+from foodrescue import models 
+from foodrescue.models import User, Donor
+from django.http import JsonResponse
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
+import json
 from django.db.models import Q  # Add this import
+from django.contrib.auth.decorators import login_required
+
+@csrf_exempt
+def admin_donors(request):
+    if request.method == "GET":
+        return render(request, "admin_panel/manage_donors.html")
+
+@csrf_exempt
+def admin_donor_api(request):
+    if request.method == "GET":
+        donors = Donor.objects.all().values(
+            "donorId", "username", "email", "phonenumber", "createdAt", "is_active"
+        )
+        data = list(donors)
+        return JsonResponse({"data": data}, safe=False)
+    
+    elif request.method == "POST":
+        try:
+            body = json.loads(request.body)
+            donor_id = body.get("id")
+            action = body.get("action")
+            donor = Donor.objects.get(donorId=donor_id)
+            if action == "activate":
+                donor.is_active = True
+            elif action == "deactivate":
+                donor.is_active = False
+            else:
+                return JsonResponse({"message": "Geçersiz işlem."}, status=400) 
+            
+            donor.save()
+            return JsonResponse({"message": "Bağışçı durumu başarıyla güncellendi."})   
+        except Donor.DoesNotExist:
+            return JsonResponse({"message": "Bağışçı bulunamadı."}, status=404)
+        except Exception as e:
+            return JsonResponse({"message": f"Bir hata oluştu: {str(e)}"}, status=500)
+    
+
+@csrf_exempt
+def admin_panel(request):
+    if request.method == "GET":
+        return render(request, "admin_panel/manage_users.html")
+
+@csrf_exempt
+def admin_user_api(request):
+    if request.method == "GET":
+        users = User.objects.all().values(
+            "customerId", "username", "email", "phonenumber", "createdAt", "is_active"
+        )
+        data = list(users)
+        return JsonResponse({"data": data}, safe=False)
+    
+    elif request.method == "POST":
+        try:
+            body = json.loads(request.body)
+            user_id = body.get("id")
+            action = body.get("action")
+            
+  
+            user = User.objects.get(customerId=user_id)
+            
+            if action == "activate":
+                user.is_active = True
+            elif action == "deactivate":
+                user.is_active = False
+            else:
+                return JsonResponse({"message": "Geçersiz işlem."}, status=400)
+
+            user.save()
+            return JsonResponse({"message": "Kullanıcı durumu başarıyla güncellendi."})
+        except User.DoesNotExist:
+            return JsonResponse({"message": "Kullanıcı bulunamadı."}, status=404)
+        except Exception as e:
+            return JsonResponse({"message": f"Bir hata oluştu: {str(e)}"}, status=500)
+
+
+
+
 
 def index(request):
     return render(request, 'app/Sayfa-1.html')
@@ -163,6 +244,7 @@ def create_donation_view(request):
 def delete_donation_view(request, donation_id):
     donation = get_object_or_404(models.Donation, id=donation_id)
     donation.delete()
+    messages.success(request, 'Bağış başarıyla silindi.')
     return redirect('create_donation_view')
 def feedback(request):
     if request.method == 'POST':

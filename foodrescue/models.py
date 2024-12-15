@@ -17,7 +17,7 @@ class Donor(models.Model):
         super(Donor, self).save(*args, **kwargs)
 
     def __str__(self):
-        return self.Username
+        return self.username    
         
 
 class CustomUserManager(BaseUserManager):
@@ -56,6 +56,10 @@ class User(AbstractBaseUser):
     USERNAME_FIELD = 'username' 
     objects = CustomUserManager()
     
+    def save(self, *args, **kwargs):
+        if self.password and not self.password.startswith('pbkdf2_'):
+            self.password = make_password(self.password)
+        super(User, self).save(*args, **kwargs)
         
     @classmethod
     def create_user(cls, username,is_superuser, email, password, phonenumber, name, surname,is_staff, is_active=False):
@@ -102,11 +106,10 @@ class Donation(models.Model):
         return f"{self.quantity} kg"
       
 class DonateOperations(models.Model):
-    donation = models.ForeignKey(Donation, on_delete=models.CASCADE, default=1)  # Assuming 1 is a valid Donation ID
-    user = models.ForeignKey(User, on_delete=models.CASCADE, default=1)  # Assuming 1 is a valid User ID
+    donation = models.ForeignKey(Donation, on_delete=models.SET_NULL, null=True, blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     reserved_at = models.DateTimeField(null=True, blank=True)
     # Remove is_reserved and reserved_by from here
-   
     
     @classmethod
     def create_donate(cls, item_name, quantity, expiry_date):
@@ -126,8 +129,6 @@ class DonateOperations(models.Model):
         else:
             return False
         
-
-
 
 class Feedback(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

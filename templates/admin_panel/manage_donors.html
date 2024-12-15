@@ -1,0 +1,198 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Donörler</title>
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- JS -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f9fa;
+        }
+
+        .navbar {
+            background-color: #343a40;
+            padding: 10px;
+        }
+
+        .navbar .navbar .nav-link {
+            color: #ffffff !important;
+            font-weight: bold;
+        }
+
+        .navbar .navbar-brand {
+            color: #ffffff !important;
+            font-weight: bold;
+        }
+
+        .navbar .navbar-brand:hover {
+            color: #ffcc00 !important;
+        }
+
+        .navbar .nav-link:hover {
+            color: #ffc107 !important;
+        }
+
+        h1 {
+            color: #343a40;
+            text-align: center;
+            margin-top: 20px;
+            margin-bottom: 30px;
+        }
+
+        table.dataTable thead th {
+            background-color: #343a40;
+            color: #ffffff;
+        }
+
+        table.dataTable {
+            border-collapse: collapse !important;
+        }
+
+        .dataTables_wrapper .dt-buttons {
+            margin-bottom: 15px;
+        }
+
+        .dt-button {
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 6px 12px;
+            margin: 4px;
+            cursor: pointer;
+        }
+
+        .dt-button:hover {
+            background-color: #388e3c;
+        }
+
+        .deactivate-btn, .activate-btn {
+            padding: 6px 12px;
+            margin: 3px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .deactivate-btn {
+            background-color: #f44336;
+            color: white;
+        }
+
+        .deactivate-btn:hover {
+            background-color: #d32f2f;
+        }
+
+        .activate-btn {
+            background-color: #4caf50;
+            color: white;
+        }
+
+        .activate-btn:hover {
+            background-color: #388e3c;
+        }
+
+        table.dataTable td, table.dataTable th {
+            text-align: center; 
+            vertical-align: middle;
+        }
+        .dataTables_wrapper .dt-buttons {
+            float: left; /* Butonları sola hizalar */
+            margin-bottom: 10px;
+            margin-top: 5px;
+        }
+
+        .dataTables_wrapper .dataTables_filter {
+            float: right; /* Arama çubuğunu sağa hizalar */
+        }
+
+        .dataTables_wrapper .dataTables_length {
+            margin-top: 10px; /* Length menüsünü düzgün hizalar */
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{% url 'index' %}">Ana Sayfa</a>
+            <div class="ms-auto">
+                <a href="{% url 'admin_panel' %}" class="navbar-brand">Kullanıcı Yönetimi</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1>Bağışçı Yönetimi</h1>
+        <table id="donorTable" class="table table-striped table-bordered" style="width:100%">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Kullanıcı Adı</th>
+                    <th>Email</th>
+                    <th>Telefon Numarası</th>
+                    <th>Oluşturulma Tarihi</th>
+                    <th>Durum</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            const table = $('#donorTable').DataTable({
+                info: true,
+                ajax: {
+                    url: "/admin-panel/donor-api/",
+                    type: "GET",
+                    dataSrc: "data"
+                },
+                columns: [
+                    { data: "donorId" },
+                    { data: "username" },
+                    { data: "email" },
+                    { data: "phonenumber" },
+                    { 
+                        data: "createdAt",
+                        render: function (data) {
+                            const date = new Date(data);
+                            return date.toLocaleDateString("tr-TR") + " " + date.toLocaleTimeString("tr-TR");
+                        }
+                    },
+                    {
+                        data: "is_active",
+                        render: function (data) {
+                            return data ? "Aktif" : "Pasif";
+                        }
+                    }
+                ],
+                dom: '<"row"<"col-sm-12 col-md-6"B><"col-sm-12 col-md-6"f>>' +
+                    '<"row"<"col-sm-12"tr>>' +
+                    '<"row"<"col-sm-12 col-md-5"l><"col-sm-12 col-md-7"p>>',
+                lengthMenu: [[5, 10, 25, 50, -1], [5, 10, 25, 50, "Tümü"]],
+                buttons: [
+                    'copyHtml5',
+                    'excelHtml5',
+                    'csvHtml5',
+                    'print'
+                ],
+                language: {
+                    url: "//cdn.datatables.net/plug-ins/1.13.5/i18n/tr.json"
+                }
+            });
+        });
+    </script>
+</body>
+</html>

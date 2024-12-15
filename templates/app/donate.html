@@ -6,66 +6,83 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Donate</title>
     <link rel="stylesheet" href="{% static 'css/donate.css' %}">
-    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
-    <style>
-        table.dataTable {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        table.dataTable th, table.dataTable td {
-            text-align: left;
-            padding: 10px;
-        }
-        table.dataTable thead th {
-            background-color: #f4f4f4;
-        }
-        table.dataTable tbody tr:hover {
-            background-color: #f9f9f9;
-        }
-    </style>
+<style>
+    .donate-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+</style>
+
 </head>
 <body>
-    <header>
-        <h1>Donate Items</h1>
-    </header>
-    <main>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">Navbar</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+              <a class="nav-link active" aria-current="page" href="{% url 'index' %}">Home</a>
+            </div>
+          </div>
+        </div>
+      </nav>    
+    <main class="container">
         <section class="donate-form">
-            {% if error %}
-                <div class="alert alert-danger">
-                    {{ error }}
-                </div>
-            {% endif %}
-            {% if success %}
-                <div class="alert alert-success">
-                    {{ success }}
-                </div>
-            {% endif %}
-            {% if not user.is_authenticated %}
-                <div class="alert alert-warning">
-                    You need to log in to perform this action.
-                </div>
-            {% endif %}
-            <form id="donateForm" method="post">
-                {% csrf_token %}
-                <label for="item">Item:</label>
-                <input type="text" id="item" name="item" required>
+            <div class="donate-container"> 
+                <h2>Donate Oluştur</h2>
+        
+                {% if error %}
+                    <div class="alert alert-danger">
+                        {{ error }}
+                    </div>
+                {% endif %}
+                {% if success %}
+                    <div class="alert alert-success">
+                        {{ success }}
+                    </div>
+                {% endif %}
                 
-                <label for="quantity">Quantity:</label>
-                <input type="number" id="quantity" name="quantity" required>
-                
-                <label for="expiryDate">Expiry Date:</label>
-                <input type="date" id="expiryDate" name="expiry_date" required>
-                
-                <button type="submit">Donate</button>
-            </form>
+                <form id="donateForm" method="post">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="item">Item:</label>
+                        <input type="text" id="item" name="item" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="quantity">Quantity:</label>
+                        <input type="number" id="quantity" name="quantity" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="expiryDate">Expiry Date:</label>
+                        <input type="date" id="expiryDate" name="expiry_date" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Donate</button>
+                </form>
+            </div>
         </section>
-        <section class="donations-list">
+        
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} mt-2">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <section class="donations-list mt-4">
             <h2>Current Donations</h2>
-            <table id="donationsTable" class="display">
-                <thead>
+            <table id="donationsTable" class="table table-striped table-bordered">
+                <thead class="thead-dark">
                     <tr>
                         <th>ID</th>
                         <th>Item</th>
@@ -94,9 +111,14 @@
                                 {% if user.is_staff %}
                                     <form method="post" action="{% url 'delete_donation' donation.id %}" style="display:inline;">
                                         {% csrf_token %}
-                                        <button type="submit" class="btn-delete">Delete</button>
+                                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                                     </form>
                                 {% else %}
+                                    <!-- User için Reservation butonu -->
+                                    <form method="post" action="{% url 'reservation' donation.id %}" style="display:inline;">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-success btn-sm">Reserve</button>
+                                    </form>
                                     {% if donation.is_reserved %}
                                         {% if donation.reserved_by == user %}
                                             <form method="post" action="{% url 'cancel_reservation' donation.id %}" style="display:inline;">
@@ -107,7 +129,7 @@
                                     {% else %}
                                         <form method="post" action="{% url 'reserve_donation' donation.id %}">
                                             {% csrf_token %}
-                                            <button type="submit">Reserve</button>
+                                            <button type="submit" class="btn btn-success btn-sm">Reserve</button>
                                         </form>
                                     {% endif %}
                                 {% endif %}
@@ -119,6 +141,7 @@
             </table>
         </section>
     </main>
+
     <script>
         $(document).ready(function () {
             $('#donationsTable').DataTable({
