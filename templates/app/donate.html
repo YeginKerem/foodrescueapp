@@ -95,6 +95,7 @@
                 <tbody>
                     {% for donation in donations %}
                         {% if not donation.is_reserved or donation.reserved_by == user or user.is_staff %}
+                        
                         <tr>
                             <td>{{ donation.id }}</td>
                             <td>{{ donation.item_name }}</td>
@@ -108,31 +109,28 @@
                                 {% endif %}
                             </td>
                             <td>
+                                 <!-- User için Reservation butonu -->
+    <form method="post" action="{% url 'reserve_donation' donation.id %}" style="display:inline;">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-success btn-sm">Reserve</button>
+    </form>
                                 {% if user.is_staff %}
-                                    <form method="post" action="{% url 'delete_donation' donation.id %}" style="display:inline;">
-                                        {% csrf_token %}
-                                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                                    </form>
-                                {% else %}
-                                    <!-- User için Reservation butonu -->
-                                    <form method="post" action="{% url 'reservation' donation.id %}" style="display:inline;">
-                                        {% csrf_token %}
-                                        <button type="submit" class="btn btn-success btn-sm">Reserve</button>
-                                    </form>
-                                    {% if donation.is_reserved %}
-                                        {% if donation.reserved_by == user %}
-                                            <form method="post" action="{% url 'cancel_reservation' donation.id %}" style="display:inline;">
-                                                {% csrf_token %}
-                                                <button type="submit">Cancel Reservation</button>
-                                            </form>
-                                        {% endif %}
-                                    {% else %}
-                                        <form method="post" action="{% url 'reserve_donation' donation.id %}">
-                                            {% csrf_token %}
-                                            <button type="submit" class="btn btn-success btn-sm">Reserve</button>
-                                        </form>
-                                    {% endif %}
-                                {% endif %}
+    <form method="post" action="{% url 'delete_donation' donation.id %}" style="display:inline;">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+    </form>
+    
+{% else %}
+   
+    {% if donation.is_reserved %}
+        {% if donation.reserved_by == user %}
+            <form method="post" action="{% url 'cancel_reservation' donation.id %}" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit">Cancel Reservation</button>
+            </form>
+        {% endif %}
+    {% endif %}
+{% endif %}
                             </td>
                         </tr>
                         {% endif %}
