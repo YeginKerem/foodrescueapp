@@ -259,3 +259,5 @@ def feedback(request):
 
 
 
+def feedback2(request):
+    return render(request, 'app/feedback2.html')

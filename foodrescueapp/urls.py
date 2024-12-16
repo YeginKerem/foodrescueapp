@@ -20,4 +20,5 @@ urlpatterns = [
     path("admin-panel/api/", views.admin_user_api, name="admin_user_api"),  # JSON API
     path('admin-panel/donors/', views.admin_donors, name='admin_donors'),
     path('admin-panel/donor-api/', views.admin_donor_api, name='admin_donor_api'),
+    path('feedback2/', views.feedback2, name='feedback2'),
 ]
