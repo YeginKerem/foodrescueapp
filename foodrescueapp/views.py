@@ -2,13 +2,44 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth import login, logout
 from django.contrib import messages
 from foodrescue import models 
-from foodrescue.models import User, Donor
-from django.http import JsonResponse
+from foodrescue.models import User, Donor, Feedback2
+from django.http import HttpResponse, JsonResponse
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 import json
 from django.db.models import Q  # Add this import
 from django.contrib.auth.decorators import login_required
+
+@csrf_exempt
+def admin_contact(request):
+    if request.method == 'GET':
+        return render(request, 'admin_panel/manage_contact.html')
+
+@csrf_exempt
+def admin_contact_api(request):
+    if request.method == 'GET':
+        feedbacks = Feedback2.objects.all().values(
+            "id", "name", "email", "phone_number", "message", "created_at"
+        )
+        data = list(feedbacks)
+        return JsonResponse({"data": data}, safe=False)
+
+    elif request.method == 'POST':
+        try:
+            body = json.loads(request.body)
+            feedback_id = body.get('id')
+
+            # İlgili kaydı sil
+            feedback = Feedback2.objects.get(id=feedback_id)
+            feedback.delete()
+
+            return JsonResponse({"status": "success", "message": "Kayıt başarıyla silindi."})
+        except Feedback2.DoesNotExist:
+            return JsonResponse({"status": "error", "message": "Kayıt bulunamadı."}, status=404)
+        except Exception as e:
+            return JsonResponse({"status": "error", "message": str(e)}, status=400)
+
+
 
 @csrf_exempt
 def admin_donors(request):
@@ -81,8 +112,6 @@ def admin_user_api(request):
             return JsonResponse({"message": "Kullanıcı bulunamadı."}, status=404)
         except Exception as e:
             return JsonResponse({"message": f"Bir hata oluştu: {str(e)}"}, status=500)
-
-
 
 
 
@@ -181,6 +210,7 @@ def register_request(request):
 def logout_request(request):
     logout(request)
     return redirect("index")
+
 @login_required
 def reserve_donation_view(request, donation_id):
     donation = get_object_or_404(models.Donation, id=donation_id)
@@ -195,6 +225,7 @@ def reserve_donation_view(request, donation_id):
     
     messages.success(request, "Donation reserved successfully!")
     return redirect('create_donation_view')
+
 @login_required
 def cancel_reservation_view(request, donation_id):
     donation = get_object_or_404(models.Donation, id=donation_id)
@@ -246,6 +277,7 @@ def delete_donation_view(request, donation_id):
     donation.delete()
     messages.success(request, 'Bağış başarıyla silindi.')
     return redirect('create_donation_view')
+
 def feedback(request):
     if request.method == 'POST':
         user = request.POST.get('user')
@@ -257,7 +289,22 @@ def feedback(request):
         return render(request, 'app/feedback.html')
     return render(request, 'app/feedback.html')
 
+def feedback_view(request):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        phone_number = request.POST.get('phone_number')
+        message = request.POST.get('message')
 
+        Feedback2.objects.create(
+            name=name,
+            email=email,
+            phone_number=phone_number,
+            message=message
+        )
 
-def feedback2(request):
-    return render(request, 'app/feedback2.html')
+        messages.success(request, 'Geri dönüşünüz için teşekkür ederiz!')
+        return redirect('index') 
+
+    else:
+        return render(request, 'app/feedback2.html')

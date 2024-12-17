@@ -164,3 +164,18 @@ class Feedback(models.Model):
             return True
         except Feedback.DoesNotExist:
             return False
+
+class Feedback2(models.Model):
+    name = models.CharField(max_length=100, blank=True, null=True, verbose_name='Name')
+    email = models.EmailField(blank=True, null=True, verbose_name='Email')
+    phone_number = models.CharField(max_length=15, blank=True, null=True, verbose_name='Phone Number')
+    message = models.TextField(blank=True, null=True, verbose_name='Message')
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Created At')
+
+    def __str__(self):
+        return self.name
+    
+    class Meta:
+        verbose_name = 'Feedback'
+        verbose_name_plural = 'Feedbacks'
+        ordering = ['-created_at']

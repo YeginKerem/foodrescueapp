@@ -1,188 +1,240 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Contact Us</title>
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"
+    />
     <style>
-        
-        .contact-section {
-            position: relative;
-            height: 85vh; 
-            color: #fff;
-            overflow: hidden;
-        }
+      .contact-section {
+        position: relative;
+        height: 85vh;
+        color: #fff;
+        overflow: hidden;
+      }
 
-        .contact-section::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('/static/img/bunu-kullan.jpg') no-repeat center center;
-            background-size: cover;
-            opacity: 0.6;
-            z-index: 0;
-        }
+      .contact-section::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url("/static/img/bunu-kullan.jpg") no-repeat center center;
+        background-size: cover;
+        opacity: 0.6;
+        z-index: 0;
+      }
 
-        .contact-section .container {
-            position: relative;
-            z-index: 1;
-        }
+      .contact-section .container {
+        position: relative;
+        z-index: 1;
+      }
 
-       
-        .btn-primary {
-            background-color: #6c757d; 
-            border-color: #6c757d;
-        }
+      .btn-primary {
+        background-color: #6c757d;
+        border-color: #6c757d;
+      }
 
-        .btn-primary:hover {
-            background-color: #5a6268;
-            border-color: #545b62;
-        }
+      .btn-primary:hover {
+        background-color: #5a6268;
+        border-color: #545b62;
+      }
 
-        .contact-icon {
-            font-size: 1.5rem;
-            background-color: #6c757d; 
-            color: #fff;
-            padding: 10px;
-            border-radius: 50%;
-            display: inline-block;
-        }
+      .contact-icon {
+        font-size: 1.5rem;
+        background-color: #6c757d;
+        color: #fff;
+        padding: 10px;
+        border-radius: 50%;
+        display: inline-block;
+      }
 
-        
-        .navbar {
-            background-color: #343a40;
-        }
+      .navbar {
+        background-color: #343a40;
+      }
 
-        .navbar .nav-link, .navbar .navbar-brand {
-            color: #ffffff !important;
-        }
+      .navbar .nav-link,
+      .navbar .navbar-brand {
+        color: #ffffff !important;
+      }
 
-        .navbar .nav-link:hover {
-            color: #ffcc00 !important;
-        }
+      .navbar .nav-link:hover {
+        color: #ffcc00 !important;
+      }
 
-       
-        .footer {
-            background-color: #343a40;
-            color: #fff;
-            padding: 20px 0;
-            text-align: center;
-        }
+      .footer {
+        background-color: #343a40;
+        color: #fff;
+        padding: 20px 0;
+        text-align: center;
+      }
 
-        .footer a {
-            color: #0d6efd;
-        }
+      .footer a {
+        color: #0d6efd;
+      }
 
-        .footer a:hover {
-            text-decoration: none;
-        }
+      .footer a:hover {
+        text-decoration: none;
+      }
+      .container {
+        margin-top: 5%;
+      }
     </style>
-</head>
-<body>
-
+  </head>
+  <body>
     <nav class="navbar navbar-expand-lg">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="{% url 'index' %}">MyApp</a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-              <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="{% url 'index' %}">Home</a>
-              </li>
-            </ul>
-          </div>
+      <div class="container-fluid">
+        <a class="navbar-brand" href="{% url 'index' %}">MyApp</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarTogglerDemo02"
+          aria-controls="navbarTogglerDemo02"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a
+                class="nav-link active"
+                aria-current="page"
+                href="{% url 'index' %}"
+                >Home</a
+              >
+            </li>
+          </ul>
         </div>
+      </div>
     </nav>
 
     <!-- Contact Section -->
     <section class="contact-section">
-        <div class="container">
-            <div class="row g-4">
-                <!-- Contact Information -->
-                <div class="col-lg-6">
-                    <h2 class="text-center mb-4">Contact Us</h2>
-                    <div class="contact-info">
-                        <!-- Phone -->
-                        <div class="d-flex align-items-center mb-3">
-                            <div class="contact-icon me-3">
-                                <i class="bi bi-telephone-fill"></i>
-                            </div>
-                            <div>
-                                <h5>Bize Ulaşın</h5>
-                                <p class="mb-0">+90 (541) 317-8898</p>
-                            </div>
-                        </div>
-                        <!-- Location -->
-                        <div class="d-flex align-items-center mb-3">
-                            <div class="contact-icon me-3">
-                                <i class="bi bi-geo-alt-fill"></i>
-                            </div>
-                            <div>
-                                <h5>Lokasyon</h5>
-                                <p class="mb-0">Yeni Mahalle Ece Sokak No:7 Silivri/Istanbul</p>
-                            </div>
-                        </div>
-                        <!-- Email -->
-                        <div class="d-flex align-items-center mb-3">
-                            <div class="contact-icon me-3">
-                                <i class="bi bi-envelope-fill"></i>
-                            </div>
-                            <div>
-                                <h5>Email</h5>
-                                <p class="mb-0">foodrescueapp@gmail.com</p>
-                            </div>
-                        </div>
-                        <!-- Hours -->
-                        <div class="d-flex align-items-center">
-                            <div class="contact-icon me-3">
-                                <i class="bi bi-clock-fill"></i>
-                            </div>
-                            <div>
-                                <h5>Çalışma Saatleri</h5>
-                                <p class="mb-0">Hafta içi: 09:00-17.00</p>
-                            </div>
-                        </div>
-                    </div>
+      <div class="container">
+        <div class="row g-4">
+          <!-- Contact Information -->
+          <div class="col-lg-6">
+            <h2 class="text-center mb-4">Bize Ulaşın</h2>
+            <div class="contact-info">
+              <!-- Phone -->
+              <div class="d-flex align-items-center mb-3">
+                <div class="contact-icon me-3">
+                  <i class="bi bi-telephone-fill"></i>
                 </div>
-                <!-- Contact Form -->
-                <div class="col-lg-6">
-                    <h2 class="text-center mb-4">Get In Touch</h2>
-                    <form>
-                        <div class="mb-3">
-                            <label for="name" class="form-label">Name</label>
-                            <input type="text" class="form-control" id="name" placeholder="Enter your name" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="email" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="email" placeholder="Enter your email" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="phone" class="form-label">Phone</label>
-                            <input type="tel" class="form-control" id="phone" placeholder="Enter your phone number">
-                        </div>
-                        <div class="mb-3">
-                            <label for="message" class="form-label">Message</label>
-                            <textarea class="form-control" id="message" rows="4" placeholder="Enter your message"></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary w-100">Send Message</button>
-                    </form>
+                <div>
+                  <h5>Telefon</h5>
+                  <p class="mb-0">+90 (541) 317-8898</p>
                 </div>
+              </div>
+              <!-- Location -->
+              <div class="d-flex align-items-center mb-3">
+                <div class="contact-icon me-3">
+                  <i class="bi bi-geo-alt-fill"></i>
+                </div>
+                <div>
+                  <h5>Lokasyon</h5>
+                  <p class="mb-0">
+                    Yeni Mahalle Ece Sokak No:7 Silivri/Istanbul
+                  </p>
+                </div>
+              </div>
+              <!-- Email -->
+              <div class="d-flex align-items-center mb-3">
+                <div class="contact-icon me-3">
+                  <i class="bi bi-envelope-fill"></i>
+                </div>
+                <div>
+                  <h5>Email</h5>
+                  <p class="mb-0">foodrescueapp@gmail.com</p>
+                </div>
+              </div>
+              <!-- Hours -->
+              <div class="d-flex align-items-center">
+                <div class="contact-icon me-3">
+                  <i class="bi bi-clock-fill"></i>
+                </div>
+                <div>
+                  <h5>Çalışma Saatleri</h5>
+                  <p class="mb-0">Hafta içi: 09:00-17.00</p>
+                </div>
+              </div>
             </div>
+          </div>
+          <!-- Contact Form -->
+          <div class="col-lg-6">
+            <h2 class="text-center mb-4">İstek ve önerileriniz için</h2>
+            <form method="POST" action="{% url 'contact' %}">
+              {% csrf_token %}
+              <div class="mb-3">
+                <label for="name" class="form-label">Name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="name"
+                  name="name"
+                  placeholder="Enter your name"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input
+                  type="email"
+                  class="form-control"
+                  id="email"
+                  name="email"
+                  placeholder="Enter your email"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label for="phone_number" class="form-label">Phone</label>
+                <input
+                  type="tel"
+                  class="form-control"
+                  id="phone_number"
+                  name="phone_number"
+                  placeholder="Enter your phone number"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="message" class="form-label">Message</label>
+                <textarea
+                  class="form-control"
+                  id="message"
+                  name="message"
+                  rows="4"
+                  placeholder="Enter your message"
+                ></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary">
+                Send Message
+              </button>
+            </form>
+          </div>
         </div>
+      </div>
     </section>
 
     <footer class="footer">
-        <p>&copy; 2024 MyApp. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms & Conditions</a></p>
+      <p>
+        &copy; 2024 MyApp. All rights reserved. |
+        <a href="#">Privacy Policy</a> | <a href="#">Terms & Conditions</a>
+      </p>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
+  </body>
 </html>

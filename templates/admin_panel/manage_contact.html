@@ -4,7 +4,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Admin Panel - Donörler</title>
+    <title>Admin Panel - Geri Bildirim</title>
     <!-- CSS -->
     <link
       rel="stylesheet"
@@ -20,6 +20,7 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
     />
     <!-- JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
@@ -31,75 +32,103 @@
         font-family: "Arial", sans-serif;
         background-color: #f8f9fa;
       }
-
       .navbar {
         background-color: #343a40;
         padding: 10px;
       }
-
       .navbar .navbar .nav-link {
         color: #ffffff !important;
         font-weight: bold;
       }
-
       .navbar .navbar-brand {
         color: #ffffff !important;
         font-weight: bold;
       }
-
       .navbar .navbar-brand:hover {
         color: #ffcc00 !important;
       }
-
       .navbar .nav-link:hover {
         color: #ffc107 !important;
       }
-
       h1 {
         color: #343a40;
         text-align: center;
         margin-top: 20px;
         margin-bottom: 30px;
       }
-
-      .panel-link {
-        text-decoration: none; /* Alt çizgiyi kaldır */
-        color: #343a40; /* Başlangıç rengi */
-        font-weight: 500; /* Orta kalınlıkta yazı */
-        transition: color 0.3s ease, padding-left 0.3s ease; /* Geçiş animasyonları */
-      }
-
-      .panel-link:hover {
-        color: #ffc107; /* Üzerine gelince renk değişimi */
-        padding-left: 10px; /* Sol tarafa kayma efekti */
-      }
-
-      .list-group-item {
-        border: none; /* Liste öğelerinin kenar çizgilerini kaldır */
-        padding: 12px 15px; /* Daha rahat görünüm için padding */
-      }
-
-      .list-group-item:not(:last-child) {
-        border-bottom: 1px solid #ddd; /* Alt sınırları hafif gri yapmak */
-      }
-
-      .list-group {
-        padding: 0; /* Listeye ekstra padding eklememek için */
-      }
-
-      .table-striped th {
+      table.dataTable thead th {
         background-color: #343a40;
+        color: #ffffff;
+      }
+      table.dataTable {
+        border-collapse: collapse !important;
+      }
+      .dataTables_wrapper .dt-buttons {
+        margin-bottom: 15px;
+      }
+      .dt-button {
+        background-color: #4caf50;
         color: white;
+        border: none;
+        border-radius: 4px;
+        padding: 6px 12px;
+        margin: 4px;
+        cursor: pointer;
       }
-
-      .table-bordered {
-        border: 1px solid #ddd;
+      .dt-button:hover {
+        background-color: #388e3c;
       }
-
+      .delete-btn {
+        padding: 6px 12px;
+        margin: 3px;
+        border-radius: 4px;
+        background-color: #f44336;
+        color: white;
+        cursor: pointer;
+      }
+      .delete-btn:hover {
+        background-color: #d32f2f;
+      }
       table.dataTable td,
       table.dataTable th {
         text-align: center;
         vertical-align: middle;
+      }
+      .dataTables_wrapper .dt-buttons {
+        float: left;
+        margin-bottom: 10px;
+        margin-top: 5px;
+      }
+      .dataTables_wrapper .dataTables_filter {
+        float: right;
+      }
+      .dataTables_wrapper .dataTables_length {
+        margin-top: 10px;
+      }
+
+      .panel-link {
+        text-decoration: none;
+        color: #343a40;
+        font-weight: 500;
+        transition: color 0.3s ease, padding-left 0.3s ease;
+      }
+
+      .panel-link:hover {
+        color: #ffc107;
+        padding-left: 10px;
+      }
+
+      .list-group-item {
+        border: none;
+        padding: 12px 15px;
+      }
+
+      .list-group-item:not(:last-child) {
+        border-bottom: 1px solid #ddd;
+      }
+
+      .list-group {
+        padding: 0;
       }
     </style>
   </head>
@@ -107,11 +136,7 @@
     <nav class="navbar">
       <div class="container-fluid">
         <a class="navbar-brand" href="{% url 'index' %}">Ana Sayfa</a>
-        <div class="ms-auto">
-          <a href="{% url 'admin_panel' %}" class="navbar-brand"
-            >Kullanıcı Yönetimi</a
-          >
-        </div>
+        <div class="ms-auto"></div>
       </div>
     </nav>
 
@@ -136,21 +161,23 @@
             </li>
           </ul>
         </div>
+
         <div class="col-md-9">
-          <h1>Bağışçı Yönetimi</h1>
+          <h1>Geri Bildirim Yönetimi</h1>
           <table
-            id="donorTable"
+            id="contactTable"
             class="table table-striped table-bordered"
             style="width: 100%"
           >
             <thead>
               <tr>
                 <th>ID</th>
-                <th>Kullanıcı Adı</th>
+                <th>İsim</th>
                 <th>Email</th>
                 <th>Telefon Numarası</th>
+                <th>Mesaj</th>
                 <th>Oluşturulma Tarihi</th>
-                <th>Durum</th>
+                <th>İşlemler</th>
               </tr>
             </thead>
           </table>
@@ -160,33 +187,39 @@
 
     <script>
       $(document).ready(function () {
-        const table = $("#donorTable").DataTable({
+        var table = $("#contactTable").DataTable({
           info: true,
           ajax: {
-            url: "/admin-panel/donor-api/",
+            url: "/admin-panel/contact-api/",
             type: "GET",
             dataSrc: "data",
           },
           columns: [
-            { data: "donorId" },
-            { data: "username" },
+            { data: "id" },
+            { data: "name" },
             { data: "email" },
-            { data: "phonenumber" },
+            { data: "phone_number" },
+            { data: "message" },
             {
-              data: "createdAt",
+              data: "created_at",
               render: function (data) {
-                const date = new Date(data);
-                return (
-                  date.toLocaleDateString("tr-TR") +
-                  " " +
-                  date.toLocaleTimeString("tr-TR")
-                );
+                const date = new Date(data); // API'den gelen ISO formatındaki tarih
+                if (!isNaN(date.getTime())) {
+                  // Geçerli bir tarih mi?
+                  return (
+                    date.toLocaleDateString("tr-TR") +
+                    " " +
+                    date.toLocaleTimeString("tr-TR")
+                  );
+                }
+                return "Geçersiz tarih"; // Geçersizse hata mesajı döndür
               },
             },
+
             {
-              data: "is_active",
+              data: null,
               render: function (data) {
-                return data ? "Aktif" : "Pasif";
+                return `<button class="delete-btn" data-id="${data.id}">Sil</button>`;
               },
             },
           ],
@@ -202,6 +235,25 @@
           language: {
             url: "//cdn.datatables.net/plug-ins/1.13.5/i18n/tr.json",
           },
+        });
+
+        $(document).on("click", ".delete-btn", function () {
+          const contactId = $(this).data("id");
+          if (confirm("Bu kaydı silmek istediğinizden emin misiniz?")) {
+            $.ajax({
+              url: "/admin-panel/contact-api/",
+              type: "POST",
+              data: JSON.stringify({ id: contactId }),
+              contentType: "application/json",
+              success: function (response) {
+                table.ajax.reload();
+                alert(response.message);
+              },
+              error: function (xhr, status, error) {
+                alert("Bir hata oluştu: " + xhr.responseText);
+              },
+            });
+          }
         });
       });
     </script>
