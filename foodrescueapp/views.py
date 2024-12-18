@@ -9,6 +9,8 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 from django.db.models import Q  # Add this import
 from django.contrib.auth.decorators import login_required
+from foodrescueapp.decorators import login_req, authenticated_redirect, superuser_required
+
 
 @csrf_exempt
 def admin_contact(request):
@@ -38,8 +40,6 @@ def admin_contact_api(request):
             return JsonResponse({"status": "error", "message": "Kayıt bulunamadı."}, status=404)
         except Exception as e:
             return JsonResponse({"status": "error", "message": str(e)}, status=400)
-
-
 
 @csrf_exempt
 def admin_donors(request):
@@ -73,8 +73,7 @@ def admin_donor_api(request):
         except Donor.DoesNotExist:
             return JsonResponse({"message": "Bağışçı bulunamadı."}, status=404)
         except Exception as e:
-            return JsonResponse({"message": f"Bir hata oluştu: {str(e)}"}, status=500)
-    
+            return JsonResponse({"message": f"Bir hata oluştu: {str(e)}"}, status=500)   
 
 @csrf_exempt
 def admin_panel(request):
@@ -114,9 +113,10 @@ def admin_user_api(request):
             return JsonResponse({"message": f"Bir hata oluştu: {str(e)}"}, status=500)
 
 
-
 def index(request):
     return render(request, 'app/Sayfa-1.html')
+
+@authenticated_redirect
 def login_request(request):
     if request.method == "POST":
         username = request.POST["username"]
@@ -137,6 +137,8 @@ def login_request(request):
             messages.error(request, "Böyle bir kullanıcı bulunmamaktadır.")
 
     return render(request, "account/login.html")
+
+@authenticated_redirect
 def register_request(request):
     if request.method == "POST":
         username = request.POST["username"]
@@ -207,11 +209,12 @@ def register_request(request):
                           })
         
     return render(request, "account/register.html")
+
 def logout_request(request):
     logout(request)
     return redirect("index")
 
-@login_required
+
 def reserve_donation_view(request, donation_id):
     donation = get_object_or_404(models.Donation, id=donation_id)
     
@@ -226,7 +229,7 @@ def reserve_donation_view(request, donation_id):
     messages.success(request, "Donation reserved successfully!")
     return redirect('create_donation_view')
 
-@login_required
+
 def cancel_reservation_view(request, donation_id):
     donation = get_object_or_404(models.Donation, id=donation_id)
     
@@ -241,8 +244,7 @@ def cancel_reservation_view(request, donation_id):
 
     return redirect('create_donation_view')
 
-
-@login_required
+@login_req
 def create_donation_view(request):
     if not request.user.is_authenticated:
         messages.warning(request, "You need to log in to perform this action.")
@@ -289,6 +291,7 @@ def feedback(request):
         return render(request, 'app/feedback.html')
     return render(request, 'app/feedback.html')
 
+@login_req
 def feedback_view(request):
     if request.method == 'POST':
         name = request.POST.get('name')

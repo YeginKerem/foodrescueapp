@@ -86,11 +86,25 @@
         </div>
       </div>
     </nav>
-    {% if messages %}
-    {% for message in messages %}
-        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
-    {% endfor %}
-  {% endif %}
+
+
+
+{% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    </div>
+
+    <script>
+        // Mesajları 3 saniye sonra gizle
+        setTimeout(() => {
+            const messages = document.querySelectorAll('.messages .alert');
+            messages.forEach(message => message.style.display = 'none');
+        }, 3000); // 3000ms = 3 saniye
+    </script>
+{% endif %}
+
     
 
     
@@ -255,24 +269,25 @@ c6.177,6.18,9.262,14.271,9.262,22.366C354.708,234.018,351.617,242.115,345.441,24
     </section>
     <section class="u-align-center u-clearfix u-container-align-center u-section-6" id="sec-c982">
       <div class="u-clearfix u-sheet u-valign-middle u-sheet-1">
-        <h2 class="u-align-center u-text u-text-default u-text-1">Testimonials</h2>
-        <p class="u-align-center u-text u-text-2">Mauris efficitur, mauris in auctor euismod, quam elit ultrices urna, eget eleifend arcu risus id metus. Maecenas ex enim, mattis eu velit vitae, blandit mattis sapien.</p>
+        <h2 class="u-align-center u-text u-text-default u-text-1">Görüşler</h2>
+        <!-- <p class="u-align-center u-text u-text-2">Mauris efficitur, mauris in auctor euismod, quam elit ultrices urna, eget eleifend arcu risus id metus. Maecenas ex enim, mattis eu velit vitae, blandit mattis sapien.</p> -->
         <div class="u-list u-list-1">
           <div class="u-repeater u-repeater-1">
             <div class="u-align-center u-container-align-center u-container-style u-list-item u-repeater-item">
               <div class="u-container-layout u-similar-container u-valign-top u-container-layout-1">
                 <div alt="" class="u-image u-image-circle u-image-1" src=""></div>
-                <p class="u-align-center u-text u-text-3">FOOD RESCUE NETWORK provides an effortless solution for companies to donate food and support vulnerable individuals. A simple template makes it easy to contribute.</p>
+                <p class="u-align-center u-text u-text-3">FOOD RESCUE NETWORK, şirketlerin yiyecek bağışlaması ve toplumdaki yardıma muhtaç bireylerin desteklemesi için zahmetsiz bir çözüm sunar. Bu çözüm sayesinde hem bireyler için hem de yiyecek israfının önüne geçilmesi için önemlidir.
+                </p>
                 <h5 class="u-align-center u-text u-text-4">Mattie Smith</h5>
-                <h6 class="u-align-center u-text u-text-5">Chief Accountant</h6>
+                <h6 class="u-align-center u-text u-text-5">İşletme Sahibi</h6>
               </div>
             </div>
             <div class="u-align-center u-container-align-center u-container-style u-list-item u-repeater-item">
               <div class="u-container-layout u-similar-container u-valign-top u-container-layout-2">
                 <div alt="" class="u-image u-image-circle u-image-2" src=""></div>
-                <p class="u-align-center u-text u-text-6">As a company, we found a meaningful way to give back through FOOD RESCUE NETWORK. It's heartwarming to know our donations directly help those in need.</p>
-                <h5 class="u-align-center u-text u-text-7">Mattie Smith</h5>
-                <h6 class="u-align-center u-text u-text-8">Chief Accountant</h6>
+                <p class="u-align-center u-text u-text-6">Bir Restoran olarak, FOOD RESCUE NETWORK aracılığıyla geri dönüştürmenin anlamlı bir yolunu bulduk. Bu platform sayesinde bağışlarımızın doğrudan ihtiyaç sahiplerine gittiğini ve onlara yardım ettiğini bilmek içimizi ısıtıyor.</p>
+                <h5 class="u-align-center u-text u-text-7">Cameron Diaz</h5>
+                <h6 class="u-align-center u-text u-text-8">Baş aşçı</h6>
               </div>
             </div>
           </div>
@@ -293,25 +308,25 @@ c6.177,6.18,9.262,14.271,9.262,22.366C354.708,234.018,351.617,242.115,345.441,24
                     <div class="u-repeater u-repeater-1">
                       <div class="u-container-align-center u-container-style u-list-item u-repeater-item u-shape-rectangle">
                         <div class="u-container-layout u-similar-container u-valign-middle u-container-layout-3">
-                          <p class="u-align-center u-text u-text-1">awards</p>
-                          <h3 class="u-align-left u-custom-font u-font-montserrat u-text u-text-default u-text-palette-2-light-1 u-text-2" data-animation-name="counter" data-animation-event="scroll" data-animation-duration="3000">17</h3>
+                          <p class="u-align-center u-text u-text-1">KULLANICI</p>
+                          <h3 class="u-align-left u-custom-font u-font-montserrat u-text u-text-default u-text-palette-2-light-1 u-text-2" data-animation-name="counter" data-animation-event="scroll" data-animation-duration="3000">9740</h3>
                         </div>
                       </div>
                       <div class="u-container-align-center u-container-style u-list-item u-repeater-item u-shape-rectangle">
                         <div class="u-container-layout u-similar-container u-valign-middle u-container-layout-4">
-                          <p class="u-align-center u-text u-text-3">XP YEARS</p>
+                          <p class="u-align-center u-text u-text-3">DENEYIM</p>
                           <h3 class="u-align-left u-custom-font u-font-montserrat u-text u-text-default u-text-palette-2-light-1 u-text-4" data-animation-name="counter" data-animation-event="scroll" data-animation-duration="3000">12+</h3>
                         </div>
                       </div>
                       <div class="u-container-align-center u-container-style u-list-item u-repeater-item u-shape-rectangle">
                         <div class="u-container-layout u-similar-container u-valign-middle u-container-layout-5">
-                          <p class="u-align-center u-text u-text-5">clients</p>
+                          <p class="u-align-center u-text u-text-5">RESTORAN</p>
                           <h3 class="u-align-left u-custom-font u-font-montserrat u-text u-text-default u-text-palette-2-light-1 u-text-6" data-animation-name="counter" data-animation-event="scroll" data-animation-duration="3000">138</h3>
                         </div>
                       </div>
                       <div class="u-container-style u-list-item u-repeater-item u-shape-rectangle">
                         <div class="u-container-layout u-similar-container u-valign-middle u-container-layout-6">
-                          <p class="u-align-center u-text u-text-7">projects</p>
+                          <p class="u-align-center u-text u-text-7">GERI DONUS</p>
                           <h3 class="u-align-left u-custom-font u-font-montserrat u-text u-text-default u-text-palette-2-light-1 u-text-8" data-animation-name="counter" data-animation-event="scroll" data-animation-duration="3000">350</h3>
                         </div>
                       </div>
@@ -430,37 +445,16 @@ c6.177,6.18,9.262,14.271,9.262,22.366C354.708,234.018,351.617,242.115,345.441,24
         </div>
       </div>
     </section>
-    <section class="u-align-center u-clearfix u-container-align-center u-container-align-center-lg u-container-align-center-md u-container-align-center-sm u-container-align-center-xs u-grey-5 u-section-10" id="sec-0aee">
-      <div class="u-clearfix u-sheet u-sheet-1">
-        <div class="data-layout-selected u-clearfix u-expanded-width-lg u-expanded-width-md u-expanded-width-sm u-expanded-width-xs u-gutter-0 u-layout-wrap u-layout-wrap-1">
-          <div class="u-layout" >
-            <div class="u-layout-row" >
-              <div class="u-align-center-lg u-align-center-xl u-container-style u-layout-cell u-left-cell u-size-30 u-size-xs-60 u-white u-layout-cell-1" src="" data-animation-name="customAnimationIn" data-animation-duration="1500" data-animation-delay="500">
-                <div class="u-container-layout u-valign-bottom-md u-valign-bottom-xl u-container-layout-1" src="">
-                  <img alt="" class="u-expanded-width u-image u-image-default u-image-1" data-animation-name="customAnimationIn" data-animation-duration="1500" data-animation-delay="500" src="{% static "img/photo-1695839272383-62b0a81ee220.jpeg" %}">
-                </div>
-              </div>
-              <div class="u-container-align-left u-container-style u-layout-cell u-right-cell u-shape-rectangle u-size-30 u-size-xs-60 u-white u-layout-cell-2" data-animation-name="customAnimationIn" data-animation-duration="1500" data-animation-delay="750">
-                <div class="u-container-layout u-valign-middle u-container-layout-2">
-                  <h2 class="u-align-left u-text u-text-1">Donation Hub</h2>
-                  <p class="u-align-left u-text u-text-2">Companies are encouraged to contribute food donations to the site, fostering a community-driven approach to help those facing hardships. Users seeking aid can access a user-friendly template to request the essential food supplies they require.</p>
-                  <a href="#" class="u-align-left u-btn u-button-style u-palette-2-base u-btn-1">Read More</a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+
     <section class="u-clearfix u-container-align-center u-section-11" id="sec-b9f6">
       <div class="u-clearfix u-sheet u-valign-middle u-sheet-1">
-        <h2 class="u-align-center u-text u-text-default u-text-1">Our Team</h2>
-        <p class="u-align-center u-text u-text-2">Sample text. Click to select the Text Element.</p>
+        <h2 class="u-align-center u-text u-text-default u-text-1">Ekibimiz</h2>
+        <p class="u-align-center u-text u-text-2">Hızlı, yardımsever, güvenilir...</p>
         <div class="u-expanded-width u-list u-list-1">
           <div class="u-repeater u-repeater-1">
             <div class="u-align-center u-container-align-center u-list-item u-repeater-item">
               <div class="u-container-layout u-similar-container u-valign-top u-container-layout-1">
-                <div alt="" class="custom-expanded u-border-8 u-border-palette-2-light-1 u-image u-image-circle u-image-1"></div>
+                <div  alt="" class="custom-expanded u-border-8 u-border-palette-2-light-1 u-image u-image-circle u-image-1"></div>
                 <h5 class="u-align-center u-text u-text-3">Frank Kinney</h5>
                 <p class="u-align-center u-text u-text-4">Financial Director</p>
               </div>
