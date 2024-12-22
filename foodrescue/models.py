@@ -1,3 +1,4 @@
+from datetime import datetime, date
 from django.db import models
 from django.contrib.auth.hashers import check_password, make_password
 from django.contrib.auth.models import UserManager, BaseUserManager,AbstractBaseUser
@@ -109,18 +110,20 @@ class DonateOperations(models.Model):
     donation = models.ForeignKey(Donation, on_delete=models.SET_NULL, null=True, blank=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     reserved_at = models.DateTimeField(null=True, blank=True)
-    # Remove is_reserved and reserved_by from here
-    
     @classmethod
     def create_donate(cls, item_name, quantity, expiry_date):
         if int(quantity) >= 100000:
             raise ValueError("Quantity is too high")
+        if int(quantity) <= 0:
+            raise ValueError("Quantity is too low")
+        if datetime.strptime(expiry_date,"%Y-%m-%d").date() < date.today():
+            raise ValueError("Expiry date is in the past")
         donation = Donation(item_name=item_name,quantity=float(quantity)/1000, expiry_date=expiry_date)
         donation.save()
         return donation    
     @classmethod
     def get_current_donations(cls):
-        return Donation.objects.all()
+        return Donation.objects.filter()
     
     def UserReservationSystemById():
 

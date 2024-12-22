@@ -24,4 +24,5 @@ urlpatterns = [
     path('admin-panel/contact/', views.admin_contact, name='admin_contact'),
     path('admin-panel/contact-api/', views.admin_contact_api, name='admin_contact_api'),
     path('contact/', views.feedback_view, name='contact'),
+    path('donationDateControl/<int:donation_id>/', views.donationDateControl, name='donationDateControl'),
 ]

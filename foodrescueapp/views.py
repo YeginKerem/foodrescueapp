@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth import login, logout
 from django.contrib import messages
@@ -10,7 +11,7 @@ import json
 from django.db.models import Q  # Add this import
 from django.contrib.auth.decorators import login_required
 from foodrescueapp.decorators import login_req, authenticated_redirect, superuser_required
-
+from django.utils.timezone import now
 
 @csrf_exempt
 def admin_contact(request):
@@ -253,7 +254,6 @@ def create_donation_view(request):
         item = request.POST.get('item')
         quantity = request.POST.get('quantity')
         expiry_date = request.POST.get('expiry_date')
-        
         try:
             models.DonateOperations.create_donate(item_name=item, quantity=quantity, expiry_date=expiry_date)
             return render(request, 'app/donate.html', {
@@ -272,7 +272,7 @@ def create_donation_view(request):
             Q(is_reserved=False) | 
             Q(reserved_by=request.user) 
         )
-    return render(request, 'app/donate.html', {'donations': donations})
+    return render(request, 'app/donate.html', {'donations': donations })
 
 def delete_donation_view(request, donation_id):
     donation = get_object_or_404(models.Donation, id=donation_id)
@@ -311,3 +311,31 @@ def feedback_view(request):
 
     else:
         return render(request, 'app/feedback2.html')
+
+
+def donationDateControl(request,donation_id):
+    if request.method == 'POST':
+        expiry_date = request.POST.get('expiry_date')
+        month_conversion = {
+            "Jan.": "1,",
+            "Feb.": "2,",
+            "March": "3,",
+            "April": "4,",
+            "May": "5,",
+            "June": "6,",
+            "July": "7,",
+            "Aug.": "8,",
+            "Sept.": "9,",
+            "Oct.": "10,",
+            "Nov.": "11,",
+            "Dec.": "12,"
+        }
+        for monthName, monthNumber in month_conversion.items():
+            if monthName in expiry_date:
+                expiry_date = expiry_date.replace(monthName, monthNumber)
+                break
+        if datetime.strptime(expiry_date,"%m, %d, %Y").date() < now().date():
+            donation = get_object_or_404(models.Donation, id=donation_id)
+            donation.delete()
+            return JsonResponse({'status': 'expired'})
+        return JsonResponse({'status': 'valid'})
