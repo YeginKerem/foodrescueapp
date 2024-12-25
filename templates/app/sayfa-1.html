@@ -8,6 +8,8 @@
     <title>Food Rescue Network</title>
     <link rel="stylesheet" href = "{% static "css/nicepage.css" %}" media="screen"> 
     <link rel="stylesheet"  href = "{% static "css/Sayfa-1.css" %}" media="screen">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.8.1/font/bootstrap-icons.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <script class="u-script" type="text/javascript" src="{% static "js/jquery.js" %}" defer=""></script>
     <script class="u-script" type="text/javascript" src="{% static "js/nicepage.js" %}" defer=""></script>
     <meta name="generator" content="Nicepage 6.21.3, nicepage.com">
@@ -32,18 +34,29 @@
   .navbar-nav .nav-item {
     margin: 0 10px; 
   }
+  html {
+    scroll-behavior: smooth;
+  }
+
+ .navbar-brand {
+  width: 55px;
+  height: 55px;
+  border-radius: 45%;
+  object-fit: cover;
+ }
+
   
 </style>
     <meta name="theme-color" content="#478ac9">
     <meta property="og:title" content="Sayfa 1">
     <meta property="og:type" content="website">
-  <meta data-intl-tel-input-cdn-path="intlTelInput/"></head>
+    <meta data-intl-tel-input-cdn-path="intlTelInput/"></head>
   <body data-path-to-root="./" data-include-products="false" class="u-body u-xl-mode" data-lang="tr">
   <body data-path-to-root="./" data-include-products="false" class="u-body u-xl-mode" data-lang="tr">
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <div class="container-fluid">
-        <a class="navbar-brand" href="#">Logo</a>
+        <img src="/static/img/logo.jpg" alt="Logo" class="navbar-brand">
         <button
           class="navbar-toggler"
           type="button"
@@ -51,41 +64,49 @@
           data-bs-target="#navbarTogglerDemo02"
           aria-controls="navbarTogglerDemo02"
           aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
+          aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-          <!-- Align login and logout links to the right -->
-          <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          <ul class="navbar-nav mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'about' %}">Hakkımızda</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#sec-1fd6">Ortaklarımız</a>
+            </li>
+            <li classfac="nav-item">
+              <a class="nav-link" href="{% url 'contact' %}">İletişim</a>
+            </li>
+            <li class="nav-item">
+              <a class="btn btn-success nav-link text-light" href="{% url 'donate' %}">Bağış Yap</a>
+            </li>
             {% if user.is_authenticated %}
             <li class="nav-item">
-              <a class="nav-link" aria-current="page" href="{% url 'donate' %}">Bağış Listesi</a>
+              <a class="nav-link">Merhaba, {{ user.username }}</a>
             </li>
-            {% if user.is_staff %}
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'admin_panel' %}">Admin Paneli</a>
-            </li>
-            {% else %}
-            <li class="nav-item">
-              <a class="nav-link">Welcome, {{ user.username }}</a>
-            </li>
-            {% endif %}
             <li class="nav-item">
               <a class="nav-link" href="{% url 'logout' %}">Çıkış Yap</a>
             </li>
             {% else %}
             <li class="nav-item">
-              <a class="nav-link" aria-current="page" href="{% url 'login' %}">Giriş Yap</a>
+              <a class="nav-link" href="{% url 'login' %}">Giriş Yap</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'register' %}">Kayıt ol</a>
+              <a class="nav-link" href="{% url 'register' %}">Kayıt Ol</a>
             </li>
             {% endif %}
           </ul>
         </div>
+        <form class="d-flex" action="{% url 'index' %}" method="get">
+          <input class="form-control me-2" type="search" name="q" placeholder="Arama Yap" aria-label="Search">
+          <button class="btn btn-outline-light" type="submit">Ara</button>
+        </form>
       </div>
     </nav>
+    
+    
+    
 
 
 
@@ -97,11 +118,10 @@
     </div>
 
     <script>
-        // Mesajları 3 saniye sonra gizle
         setTimeout(() => {
             const messages = document.querySelectorAll('.messages .alert');
             messages.forEach(message => message.style.display = 'none');
-        }, 3000); // 3000ms = 3 saniye
+        }, 3000); 
     </script>
 {% endif %}
 
@@ -118,56 +138,73 @@
         </div>
       </div>
     </section>
+
+    
     <section class="u-align-center u-clearfix u-container-align-center u-grey-15 u-section-2" id="sec-8a5a">
       <div class="u-clearfix u-sheet u-valign-middle u-sheet-1">
         <h2 class="u-align-center u-text u-text-default u-text-1">Donor Portal</h2>
         <p class="u-align-center u-text u-text-default u-text-2">The platform's primary goal is to facilitate food donations and requests efficiently and effectively.</p>
         <div class="u-expanded-width u-list u-list-1">
           <div class="u-repeater u-repeater-1">
+    
+            <!-- List Item 1 -->
             <div class="u-align-center u-container-align-center u-container-style u-list-item u-repeater-item u-video-cover u-white u-list-item-1">
-              <div class="u-container-layout u-similar-container u-valign-top u-container-layout-1"><span class="u-align-center u-icon u-icon-1"><svg class="u-svg-link" preserveAspectRatio="xMidYMin slice" viewBox="0 0 128 128" ><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#svg-a76c"></use></svg><svg class="u-svg-content" viewBox="0 0 128 128" id="svg-a76c"><polygon points="128 3 17 3 17 24 25 24 25 11 120 11 120 24 111 24 111 32 120 32 120 95 111 95 111 103 128 103"></polygon><path d="m25 24h-25v100h111v-100h-86zm78 92h-95v-63h95v63zm0-71h-95v-13h95v13z"></path><path d="m46 74v21h-21v-21h21m8-8h-37v37h37v-37z"></path><rect x="62" y="66" width="32" height="8"></rect><rect x="62" y="81" width="32" height="8"></rect><rect x="62" y="95" width="32" height="8"></rect></svg>
-            
-            
-          </span>
+              <div class="u-container-layout u-similar-container u-valign-top u-container-layout-1">
+                <span class="u-align-center u-icon u-icon-1">
+                  <i class="bi bi-house" style="font-size: 60px;"></i>
+                </span>
                 <h4 class="u-align-center u-text u-text-default u-text-3">Donor Portal</h4>
                 <p class="u-align-center u-text u-text-4">There will be two distinct user groups on the site platform. The first group comprises companies.</p>
-                <a href="" class="u-align-center u-btn u-button-style u-hover-palette-1-dark-1 u-palette-2-base u-btn-1">learn more</a>
+                <a href="{% url 'about' %}" class="u-align-center u-btn u-button-style u-hover-palette-1-dark-1 u-palette-2-base u-btn-1">Learn More</a>
               </div>
             </div>
+    
+            <!-- List Item 2 -->
             <div class="u-align-center u-container-align-center u-container-style u-list-item u-repeater-item u-video-cover u-white u-list-item-2">
-              <div class="u-container-layout u-similar-container u-valign-top u-container-layout-2"><span class="u-align-center u-icon u-icon-2"><svg class="u-svg-link" preserveAspectRatio="xMidYMin slice" viewBox="0 0 128 128" ><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#svg-891d"></use></svg><svg class="u-svg-content" viewBox="0 0 128 128" id="svg-891d"><path d="m78.9 15.9c2.1 0 3.7 1.7 3.7 3.7v3.7h-37.2v-3.7c0-2 1.7-3.7 3.7-3.7h29.8m39.7 14.8-11.6 34.5c-0.5 1.5-1.9 2.5-3.5 2.5h-20.9v-3.7c0-2-1.7-3.7-3.7-3.7h-29.8c-2.1 0-3.7 1.7-3.7 3.7v3.7h-20.9c-1.6 0-3-1-3.5-2.5l-11.6-34.5h109.2m1.5 19.1v58.6c0 2-1.7 3.7-3.7 3.7h-104.7c-2.1 0-3.7-1.7-3.7-3.7v-58.6l5.9 17.7c1.5 4.5 5.8 7.6 10.6 7.6h20.9v3.7c0 2 1.7 3.7 3.7 3.7h29.8c2.1 0 3.7-1.7 3.7-3.7v-3.7h20.9c4.8 0 9.1-3 10.6-7.6l6-17.7m-44.9 17.9v7.4h-22.4v-7.4h22.4m15.3-44.9v-3.2c0-6.4-5.2-11.6-11.6-11.6h-29.8c-6.4 0-11.7 5.2-11.7 11.6v3.2h-29.5c-4.4 0-7.9 3.5-7.9 7.9v77.7c0 6.4 5.2 11.6 11.7 11.6h104.7c6.4 0 11.7-5.2 11.7-11.6v-77.7c0-4.4-3.6-7.9-7.9-7.9h-29.7z"></path></svg>
-            
-            
-          </span>
+              <div class="u-container-layout u-similar-container u-valign-top u-container-layout-2">
+                <span class="u-align-center u-icon u-icon-2">
+                  <i class="bi bi-cart" style="font-size: 60px;"></i>
+                </span>
                 <h4 class="u-align-center u-text u-text-default u-text-5">Food Request</h4>
                 <p class="u-align-center u-text u-text-6">These companies are willing to donate food items through the platform to those in need.</p>
-                <a href="" class="u-align-center u-btn u-button-style u-hover-palette-1-dark-1 u-palette-2-base u-btn-2">learn more</a>
+                <a href="{% url 'about' %}" class="u-align-center u-btn u-button-style u-hover-palette-1-dark-1 u-palette-2-base u-btn-2">Learn More</a>
               </div>
             </div>
+    
+            <!-- List Item 3 -->
             <div class="u-align-center u-container-align-center u-container-style u-list-item u-repeater-item u-video-cover u-white u-list-item-3">
-              <div class="u-container-layout u-similar-container u-valign-top u-container-layout-3"><span class="u-align-center u-icon u-icon-3"><svg class="u-svg-link" preserveAspectRatio="xMidYMin slice" viewBox="0 0 128 128" ><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#svg-becd"></use></svg><svg class="u-svg-content" viewBox="0 0 128 128" id="svg-becd"><path d="m44.1 63.9h39.8c4.6 0 8.4-3.9 8.4-8.8v-1.8c0-5.6-2.8-10.7-7.3-13.3-2.4-1.4-5.4-2.9-8.8-4.1 2.8-3 4.6-6.9 4.6-11.3-0.1-9.2-7.6-16.6-16.8-16.6s-16.7 7.4-16.7 16.5c0 4.4 1.7 8.4 4.6 11.3-3.4 1.2-6.5 2.7-8.8 4.1-4.5 2.7-7.3 7.7-7.3 13.3v1.8c-0.1 4.9 3.7 8.9 8.3 8.9zm19.9-48c4.8 0 8.7 3.9 8.7 8.6 0 4.8-3.9 8.6-8.7 8.6s-8.7-3.9-8.7-8.6 3.9-8.6 8.7-8.6zm-20.3 37.3c0-2.7 1.3-5.3 3.4-6.5 4-2.3 10.2-5.1 16.9-5.1s12.9 2.8 16.9 5.1c2.1 1.2 3.4 3.8 3.4 6.5v1.8c0 0.6-0.3 0.9-0.4 0.9h-39.8c-0.1 0-0.4-0.3-0.4-0.9v-1.8zm5.5 40.9c-2.4-1.4-5.4-2.9-8.8-4.1 2.8-3 4.6-7 4.6-11.3 0-9.1-7.5-16.5-16.7-16.5s-16.7 7.4-16.7 16.5c0 4.4 1.7 8.4 4.6 11.3-3.4 1.2-6.5 2.7-8.8 4.1-4.6 2.6-7.4 7.7-7.4 13.3v1.8c0 4.9 3.8 8.8 8.4 8.8h39.8c4.6 0 8.4-3.9 8.4-8.8v-1.8c0-5.6-2.8-10.7-7.4-13.3zm-20.9-24.1c4.8 0 8.7 3.9 8.7 8.6 0 4.8-3.9 8.6-8.7 8.6s-8.7-3.9-8.7-8.6 3.9-8.6 8.7-8.6zm20.3 39.2c0 0.6-0.3 0.9-0.4 0.9h-39.8c-0.1 0-0.4-0.3-0.4-0.9v-1.8c0-2.7 1.3-5.3 3.4-6.5 4-2.3 10.2-5.1 16.9-5.1s12.9 2.8 16.9 5.1c2.1 1.2 3.4 3.8 3.4 6.5v1.8zm72.1-15.1c-2.4-1.4-5.4-2.9-8.8-4.1 2.8-3 4.6-6.9 4.6-11.3 0-9.1-7.5-16.5-16.7-16.5s-16.7 7.4-16.7 16.5c-0.1 4.3 1.7 8.3 4.5 11.3-3.4 1.2-6.5 2.7-8.8 4.1-4.5 2.7-7.3 7.7-7.3 13.3v1.8c0 4.9 3.8 8.8 8.4 8.8h39.8c4.6 0 8.4-3.9 8.4-8.8v-1.8c-0.1-5.6-2.9-10.7-7.4-13.3zm-21-24.1c4.8 0 8.7 3.9 8.7 8.6 0 4.8-3.9 8.6-8.7 8.6s-8.7-3.9-8.7-8.6 3.9-8.6 8.7-8.6zm20.3 39.2c0 0.6-0.3 0.9-0.4 0.9h-39.8c-0.1 0-0.4-0.3-0.4-0.9v-1.8c0-2.7 1.3-5.3 3.4-6.5 4-2.3 10.2-5.1 16.9-5.1s12.9 2.8 16.9 5.1c2.1 1.2 3.4 3.8 3.4 6.5v1.8z"></path></svg>
-            
-            
-          </span>
+              <div class="u-container-layout u-similar-container u-valign-top u-container-layout-3">
+                <span class="u-align-center u-icon u-icon-3">
+                  <i class="bi bi-people" style="font-size: 60px;"></i>
+                </span>
                 <h4 class="u-align-center u-text u-text-default u-text-7">Support Network</h4>
                 <p class="u-align-center u-text u-text-8">User group consists of individuals facing challenges, particularly food.</p>
-                <a href="" class="u-align-center u-btn u-button-style u-hover-palette-1-dark-1 u-palette-2-base u-btn-3">learn more</a>
+                <a href="{% url 'about' %}" class="u-align-center u-btn u-button-style u-hover-palette-1-dark-1 u-palette-2-base u-btn-3">Learn More</a>
               </div>
             </div>
+    
+            <!-- List Item 4 -->
             <div class="u-align-center u-container-align-center u-container-style u-list-item u-repeater-item u-video-cover u-white u-list-item-4">
-              <div class="u-container-layout u-similar-container u-valign-top u-container-layout-4"><span class="u-align-center u-icon u-icon-4"><svg class="u-svg-link" preserveAspectRatio="xMidYMin slice" viewBox="0 0 128 128"></svg><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#svg-515d"></use></svg><svg class="u-svg-content" viewBox="0 0 128 128" id="svg-515d"><path d="m93.8 13.5 18.4 25.2h-5.7c-2 0-3.6 1.6-3.6 3.6v77.7h-18.3v-77.7c0-2-1.6-3.6-3.6-3.6h-5.7l18.5-25.2m-22.4 55.6c3.3 0 6 2.7 6 6.1v44.8h-18.4v-44.8c0-3.3 2.7-6.1 6-6.1h6.4m-25.5 19.4c3.3 0 6 2.7 6 6.1v25.4h-18.4v-25.5c0-3.3 2.7-6.1 6-6.1h6.4m-25.6 19.4c3.3 0 6 2.7 6 6.1v6.1h-18.4v-6.1c0-3.3 2.7-6.1 6-6.1h6.4m73.5-107.8-6.4 8.7-18.4 25.2-9.4 12.8h17.1v15.4c-1.6-0.7-3.4-1-5.2-1h-6.5c-7.7 0-13.9 6.3-13.9 14.1v6.3c-1.6-0.7-3.4-1-5.2-1h-6.4c-7.7 0-13.9 6.3-13.9 14.1v6.3c-1.6-0.7-3.4-1-5.2-1h-6.4c-7.7-0.1-14 6.2-14 14v14.1h110.9v-81.3h17.1l-9.4-12.8-18.4-25.2-6.4-8.7z"></path></svg>
-            
-            
-          </span>
-                <h4 class="u-align-center u-text u-text-default u-text-9">Donation Hub</h4>
-                <p class="u-align-center u-text u-text-10">Users within this group are looking for a straightforward template to request the food aid.</p>
-                <a href="" class="u-align-center u-btn u-button-style u-hover-palette-1-dark-1 u-palette-2-base u-btn-4">learn more</a>
+              <div class="u-container-layout u-similar-container u-valign-top u-container-layout-4">
+                <span class="u-align-center u-icon u-icon-4">
+                  <i class="bi bi-shield-check" style="font-size: 60px;"></i>
+                </span>
+                <h4 class="u-align-center u-text u-text-default u-text-9">Secure Platform</h4>
+                <p class="u-align-center u-text u-text-10">The platform ensures a secure and reliable donation process for all participants.</p>
+                <a href="{% url 'about' %}" class="u-align-center u-btn u-button-style u-hover-palette-1-dark-1 u-palette-2-base u-btn-4">Learn More</a>
               </div>
             </div>
+    
           </div>
         </div>
       </div>
     </section>
+    
+
+
+
+
+
     <section class="u-align-center u-clearfix u-container-align-center u-grey-5 u-section-3" id="sec-47f1">
       <div class="u-clearfix u-sheet u-valign-middle u-sheet-1">
         <h2 class="u-align-center u-text u-text-default u-text-1">Food Request</h2>
@@ -350,7 +387,7 @@ c6.177,6.18,9.262,14.271,9.262,22.366C354.708,234.018,351.617,242.115,345.441,24
                     <div class="u-container-layout u-valign-middle u-container-layout-1">
                       <h2 class="u-align-left u-text u-text-1">Support Network</h2>
                       <p class="u-align-left u-text u-text-2">The FOOD RESCUE NETWORK project will cater to two distinct user groups. Companies eager to donate food and individuals in need of assistance will find a platform to connect and support each other.</p>
-                      <a href="#" class="u-align-left u-btn u-button-style u-palette-2-base u-btn-1">Read More</a>
+                      <a href="{% url 'about' %}" class="u-align-left u-btn u-button-style u-palette-2-base u-btn-1">Read More</a>
                     </div>
                   </div>
                 </div>
@@ -488,8 +525,8 @@ c6.177,6.18,9.262,14.271,9.262,22.366C354.708,234.018,351.617,242.115,345.441,24
     </section>
     <section class="u-align-center u-clearfix u-container-align-center u-section-12" id="sec-1fd6">
       <div class="u-clearfix u-sheet u-valign-middle u-sheet-1">
-        <h2 class="u-align-center u-text u-text-default u-text-1"> Our Corporate Partners</h2>
-        <p class="u-align-center u-text u-text-2">Sample text. Click to select the text box. Click again or double click to start editing the text.</p>
+        <h2 class="u-align-center u-text u-text-default u-text-1">Kurumsal Ortaklarımız</h2>
+        <p class="u-align-center u-text u-text-2">Kurumsal ortaklarımız, gıda israfını azaltma ve açlıkla mücadele etme hedeflerimize ulaşmamızda önemli bir rol oynuyor. Restoranlardan marketlere, lojistik şirketlerinden gönüllü ağlarına kadar geniş bir yelpazede destek sağlayan iş ortaklarımız, topluma pozitif bir etki yaratmamızda yanımızda. Siz de bu harekete katılarak sürdürülebilir bir geleceğe katkıda bulunabilirsiniz!</p>
         <div class="custom-expanded u-list u-list-1">
           <div class="u-repeater u-repeater-1">
             <div class="u-container-align-center u-container-style u-list-item u-repeater-item">
@@ -753,7 +790,7 @@ c6.177,6.18,9.262,14.271,9.262,22.366C354.708,234.018,351.617,242.115,345.441,24
         </div>
       </div>
     </section>
-    <section class="u-clearfix u-container-align-center u-grey-5 u-section-13" id="sec-ec53">
+    <!-- <section class="u-clearfix u-container-align-center u-grey-5 u-section-13" id="sec-ec53">
       <div class="u-clearfix u-sheet u-valign-middle u-sheet-1">
         <div class="data-layout-selected u-clearfix u-expanded-width u-gutter-28 u-layout-wrap u-layout-wrap-1">
           <div class="u-layout">
@@ -869,22 +906,22 @@ c6.177,6.18,9.262,14.271,9.262,22.366C354.708,234.018,351.617,242.115,345.441,24
           </div>
         </div>
       </div>
-    </section>
-    <section class="u-clearfix u-grey-light-2 u-typography-custom-page-typography-12--Map u-section-14" id="sec-95c8">
+    </section> -->
+
+    <!-- <section class="u-clearfix u-grey-light-2 u-typography-custom-page-typography-12--Map u-section-14" id="sec-95c8">
       <div class="u-expanded u-grey-light-2 u-map">
         <div class="embed-responsive">
           <iframe class="embed-responsive-item" src="https://maps.google.com/maps?output=embed&amp;q=Manhattan&amp;t=m" data-map="JTdCJTIycG9zaXRpb25UeXBlJTIyJTNBJTIybWFwLWFkZHJlc3MlMjIlMkMlMjJhZGRyZXNzJTIyJTNBJTIyTWFuaGF0dGFuJTIyJTJDJTIyem9vbSUyMiUzQW51bGwlMkMlMjJ0eXBlSWQlMjIlM0ElMjJyb2FkJTIyJTJDJTIybGFuZyUyMiUzQW51bGwlMkMlMjJhcGlLZXklMjIlM0FudWxsJTJDJTIybWFya2VycyUyMiUzQSU1QiU1RCU3RA=="></iframe>
         </div>
       </div>
-    </section>
+    </section> -->
     
     
     
-    <footer class="u-align-center u-clearfix u-container-align-center u-footer u-grey-80 u-footer" id="sec-b629"><div class="u-clearfix u-sheet u-sheet-1">
-        <p class="u-small-text u-text u-text-variant u-text-1">Örnek metin. Metin Öğesini seçmek için tıklayın.</p>
-      </div></footer>
-    <section class="u-backlink u-clearfix u-grey-80">
-      
-    </section>
+    <footer class="bg-dark text-light text-center py-3" style="height: 10vh;">
+      <p class="mb-0">
+        &copy; 2024 FoodRescue | Tüm Hakları Saklıdır | Toplum Tarafından Desteklenmektedir
+      </p>
+    </footer>
   
 </body></html>

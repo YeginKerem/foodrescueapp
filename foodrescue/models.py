@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.hashers import check_password, make_password
 from django.contrib.auth.models import UserManager, BaseUserManager,AbstractBaseUser
+from django.core.validators import MinValueValidator
+from django.forms import ValidationError
 
 class Donor(models.Model):
     username = models.CharField(max_length=100)
@@ -96,14 +98,18 @@ class User(AbstractBaseUser):
 
 class Donation(models.Model):
     id = models.AutoField(primary_key=True)  
-    item_name = models.CharField(max_length=100, default='Unknown Item')  # Add this line
-    quantity = models.FloatField()  # Add this line
+    item_name = models.CharField(max_length=100, default='Unknown Item')  
+    quantity = models.FloatField(validators=[MinValueValidator(0.01)])  
     expiry_date = models.DateField()
-    is_reserved = models.BooleanField(default=False)  # Add this line
-    reserved_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reserved_donations', null=True, blank=True)  # Add this line
+    is_reserved = models.BooleanField(default=False) 
+    reserved_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reserved_donations', null=True, blank=True)  
     
     def formatted_quantity(self):
         return f"{self.quantity} kg"
+    def clean(self):
+        super().clean()
+        if self.quantity < 0.01:
+            raise ValidationError("Quantity must be greater than 0.01")
       
 class DonateOperations(models.Model):
     donation = models.ForeignKey(Donation, on_delete=models.SET_NULL, null=True, blank=True)

@@ -90,10 +90,11 @@
 
     <div class="container">
       <div class="register-container">
-        <h1 class="text-center">Register</h1>
+        <h1 class="text-center">Kayıt Ol</h1>
         <hr />
         <form method="POST">
-          {% csrf_token %} {% if error %}
+          {% csrf_token %}
+          {% if error %}
           <div class="alert alert-danger">{{ error }}</div>
           {% endif %}
           <div class="row mb-3">
@@ -177,11 +178,19 @@
             />
           </div>
           <div class="d-grid">
-            <button type="submit" class="btn btn-primary">Register</button>
+            <button type="submit" class="btn btn-primary">Kayıt Ol</button>
+          </div>
+          <div class="text-center mb-3">
+            <br>
+            <p>
+              Zaten bir hesabınız var mı?
+              <a href="{% url 'login' %}" class="text-primary">Giriş Yap</a>
+            </p>
           </div>
         </form>
       </div>
     </div>
+    
 
     <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

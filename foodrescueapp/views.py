@@ -12,6 +12,10 @@ from django.contrib.auth.decorators import login_required
 from foodrescueapp.decorators import login_req, authenticated_redirect, superuser_required
 
 
+
+def about(request):
+    return render(request, 'app/about.html')  # 'about.html', templates klasörünüzde bulunmalı
+
 @csrf_exempt
 def admin_contact(request):
     if request.method == 'GET':
@@ -291,7 +295,7 @@ def feedback(request):
         return render(request, 'app/feedback.html')
     return render(request, 'app/feedback.html')
 
-@login_req
+
 def feedback_view(request):
     if request.method == 'POST':
         name = request.POST.get('name')
