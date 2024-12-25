@@ -26,4 +26,5 @@ urlpatterns = [
     path('contact/', views.feedback_view, name='contact'),
     path('about/', views.about, name='about'),
     path('donationDateControl/<int:donation_id>/', views.donationDateControl, name='donationDateControl'),
+    path('manage_reservation/<int:donation_id>/', views.manage_reservation, name='manage_reservation'),
 ]

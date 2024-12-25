@@ -249,6 +249,26 @@ def cancel_reservation_view(request, donation_id):
 
     return redirect('create_donation_view')
 
+@login_required
+def manage_reservation(request, donation_id):
+    donation = get_object_or_404(models.Donation, id=donation_id)
+    
+    if request.method == 'POST':
+        if 'cancel' in request.POST:  # Cancel butonu gönderildiyse
+            if donation.is_reserved and donation.reserved_by == request.user:
+                donation.is_reserved = False
+                donation.reserved_by = None
+                donation.save()
+                messages.success(request, 'Rezervasyon iptal edildi.')
+        
+        elif 'mark_received' in request.POST:  # Teslim Aldım butonu gönderildiyse
+            if donation.is_reserved and donation.reserved_by == request.user:
+                donation.delete()
+                messages.success(request, 'Bağış teslim alındı ve silindi.')
+            else:
+                messages.error(request, 'Bu işlemi gerçekleştirme yetkiniz yok.')
+    
+        return redirect('create_donation_view')  # Uygun sayfaya yönlendirme
 @login_req
 def create_donation_view(request):
     if not request.user.is_authenticated:
