@@ -124,6 +124,7 @@
           <thead class="thead-dark">
             <tr>
               <th>ID</th>
+              <th>Restaurant</th>
               <th>Item</th>
               <th>Quantity</th>
               <th>Expiry Date</th>
@@ -150,6 +151,7 @@
             </script>
             <tr>
               <td>{{ donation.id }}</td>
+              <td>{{ donation.restaurant }}</td>
               <td>{{ donation.item_name }}</td>
               <td>{{ donation.formatted_quantity }}</td>
               <td>{{ donation.expiry_date }}</td>
@@ -177,15 +179,27 @@
 
                 <!-- Cancel Reservation Button -->
                 {% if donation.is_reserved and donation.reserved_by == user %}
-                <form
-                  method="post"
-                  action="{% url 'cancel_reservation' donation.id %}"
-                  style="display: inline"
+                            <form
+                method="post"
+                action="{% url 'manage_reservation' donation.id %}"
+                style="display: inline"
                 >
-                  {% csrf_token %}
-                  <button type="submit" class="btn btn-warning btn-sm">
-                    Cancel Reservation
-                  </button>
+                {% csrf_token %}
+                <button type="submit" name="cancel" class="btn btn-warning btn-sm">
+                Cancel Reservation
+                </button>
+                </form>
+
+                <!-- Mark as Received Button -->
+                <form
+                method="post"
+                action="{% url 'manage_reservation' donation.id %}"
+                style="display: inline"
+                >
+                {% csrf_token %}
+                <button type="submit" name="mark_received" class="btn btn-primary btn-sm">
+                Teslim Aldım
+                </button>
                 </form>
                 {% endif %}
 

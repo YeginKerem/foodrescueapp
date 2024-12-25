@@ -99,6 +99,7 @@ class User(AbstractBaseUser):
 
 class Donation(models.Model):
     id = models.AutoField(primary_key=True)  
+    restaurant = models.CharField(max_length=100, default='Unknown Restaurant')
     item_name = models.CharField(max_length=100, default='Unknown Item')  
     quantity = models.FloatField(validators=[MinValueValidator(0.01)])  
     expiry_date = models.DateField()
