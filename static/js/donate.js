@@ -1,7 +1,8 @@
 document.addEventListener('DOMContentLoaded', function() {
+    
     const donateForm = document.getElementById('donateForm');
     const donationsList = document.getElementById('donationsList');
-
+    
     donateForm.addEventListener('submit', function(event) {
         event.preventDefault();
 

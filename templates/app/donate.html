@@ -133,6 +133,21 @@
           </thead>
           <tbody>
             {% for donation in donations %}
+            <script>
+              $.ajax({
+                url: "{% url 'donationDateControl' donation.id %}",
+                type: "POST",
+                data: {
+                  'expiry_date': '{{ donation.expiry_date }}',
+                  'csrfmiddlewaretoken': '{{ csrf_token }}'
+                },
+                success: function(response) {
+                  if (response.status === 'expired') {
+                    // Handle expired donation if needed
+                  }
+                }
+              });
+            </script>
             <tr>
               <td>{{ donation.id }}</td>
               <td>{{ donation.item_name }}</td>
