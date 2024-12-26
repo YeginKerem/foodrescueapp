@@ -45,7 +45,33 @@
   object-fit: cover;
  }
 
-  
+
+/* alternatif navbar */
+ /* .navbar {
+    position: sticky;
+    top: 0;
+    z-index: 1030;
+    background: linear-gradient(90deg, #343a40, #495057);
+}
+.navbar-brand img {
+    max-height: 50px;
+    width: auto;
+}
+.nav-link:hover {
+    color: #f8d210 !important; 
+    transition: color 0.3s ease;
+}
+
+.btn-success {
+    background-color: #28a745;
+    border-color: #28a745;
+}
+
+.btn-success:hover {
+    background-color: #218838;
+    border-color: #1e7e34;
+}
+   */
 </style>
     <meta name="theme-color" content="#478ac9">
     <meta property="og:title" content="Sayfa 1">
@@ -56,58 +82,127 @@
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <div class="container-fluid">
-        <img src="/static/img/logo.jpg" alt="Logo" class="navbar-brand">
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarTogglerDemo02"
-          aria-controls="navbarTogglerDemo02"
-          aria-expanded="false"
-          aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-          <ul class="navbar-nav mb-2 mb-lg-0">
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'about' %}">Hakkımızda</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#sec-1fd6">Ortaklarımız</a>
-            </li>
-            <li classfac="nav-item">
-              <a class="nav-link" href="{% url 'contact' %}">İletişim</a>
-            </li>
-            <li class="nav-item">
-              <a class="btn btn-success nav-link text-light" href="{% url 'donate' %}">Bağış Yap</a>
-            </li>
-            {% if user.is_authenticated %}
-            <li class="nav-item">
-              <a class="nav-link">Merhaba, {{ user.username }}</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'logout' %}">Çıkış Yap</a>
-            </li>
-            {% else %}
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'login' %}">Giriş Yap</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'register' %}">Kayıt Ol</a>
-            </li>
-            {% endif %}
-          </ul>
-        </div>
-        <form class="d-flex" action="{% url 'index' %}" method="get">
-          <input class="form-control me-2" type="search" name="q" placeholder="Arama Yap" aria-label="Search">
-          <button class="btn btn-outline-light" type="submit">Ara</button>
-        </form>
+          <img src="/static/img/logo.jpg" alt="Logo" class="navbar-brand">
+          <button
+              class="navbar-toggler"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#navbarTogglerDemo02"
+              aria-controls="navbarTogglerDemo02"
+              aria-expanded="false"
+              aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+              <ul class="navbar-nav mb-2 mb-lg-0">
+                  <li class="nav-item">
+                      <a class="nav-link" href="{% url 'about' %}">Hakkımızda</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link" href="#sec-1fd6">Ortaklarımız</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link" href="{% url 'contact' %}">İletişim</a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="btn btn-success nav-link text-light" href="{% url 'donate' %}">Bağış Yap</a>
+                  </li>
+              </ul>
+              <!-- Sağ tarafa hizalanan bağlantılar -->
+              <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                  {% if user.is_authenticated %}
+                      <li class="nav-item">
+                          <a class="nav-link">Merhaba, {{ user.username }}</a>
+                      </li>
+                      {% if user.is_staff %}
+                          <li class="nav-item">
+                              <a class="nav-link" href="{% url 'admin_panel' %}">Admin Paneli</a>
+                          </li>
+                      {% endif %}
+                      <li class="nav-item">
+                          <a class="nav-link" href="{% url 'logout' %}">Çıkış Yap</a>
+                      </li>
+                  {% else %}
+                      <li class="nav-item">
+                          <a class="nav-link" href="{% url 'login' %}">Giriş Yap</a>
+                      </li>
+                      <li class="nav-item">
+                          <a class="nav-link" href="{% url 'register' %}">Kayıt Ol</a>
+                      </li>
+                  {% endif %}
+              </ul>
+          </div>
+          <form class="d-flex" action="{% url 'index' %}" method="get">
+              <input class="form-control me-2" type="search" name="q" placeholder="Arama Yap" aria-label="Search">
+              <button class="btn btn-outline-light" type="submit">Ara</button>
+          </form>
       </div>
-    </nav>
-    
-    
-    
-
+  </nav>
+  
+    <!-- alternatif navbar     -->
+    <!-- <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container-fluid">
+          <a href="/" class="navbar-brand">
+              <img src="/static/img/logo.jpg" alt="Logo">
+          </a>
+          <button
+              class="navbar-toggler"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#navbarTogglerDemo02"
+              aria-controls="navbarTogglerDemo02"
+              aria-expanded="false"
+              aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+              <ul class="navbar-nav mb-2 mb-lg-0">
+                  <li class="nav-item">
+                      <a class="nav-link" href="{% url 'about' %}">
+                          <i class="fas fa-info-circle"></i> Hakkımızda
+                      </a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="nav-link" href="{% url 'contact' %}">
+                          <i class="fas fa-envelope"></i> İletişim
+                      </a>
+                  </li>
+                  <li class="nav-item">
+                      <a class="btn btn-success nav-link text-light" href="{% url 'donate' %}">
+                          <i class="fas fa-donate"></i> Bağış Yap
+                      </a>
+                  </li>
+              </ul>
+              <form class="d-flex ms-auto me-5" action="{% url 'index' %}" method="get">
+                  <input class="form-control me-2" type="search" name="q" placeholder="Arama Yap" aria-label="Search">
+                  <button class="btn btn-outline-light" type="submit">Ara</button>
+              </form>
+              <ul class="navbar-nav ms-auto">
+                  {% if user.is_authenticated %}
+                      <li class="nav-item">
+                          <a class="nav-link">Merhaba, {{ user.username }}</a>
+                      </li>
+                      {% if user.is_staff %}
+                          <li class="nav-item">
+                              <a class="nav-link" href="{% url 'admin_panel' %}">Admin Paneli</a>
+                          </li>
+                      {% endif %}
+                      <li class="nav-item">
+                          <a class="nav-link" href="{% url 'logout' %}">Çıkış Yap</a>
+                      </li>
+                  {% else %}
+                      <li class="nav-item">
+                          <a class="nav-link" href="{% url 'login' %}">Giriş Yap</a>
+                      </li>
+                      <li class="nav-item">
+                          <a class="nav-link" href="{% url 'register' %}">Kayıt Ol</a>
+                      </li>
+                  {% endif %}
+              </ul>
+          </div>
+      </div>
+  </nav> -->
+  
 
 
 {% if messages %}
