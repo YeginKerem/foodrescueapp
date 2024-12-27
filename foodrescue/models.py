@@ -13,7 +13,6 @@ class Donor(models.Model):
     donorId = models.AutoField(primary_key=True)
     createdAt = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=False)  
-
     def save(self, *args, **kwargs):
        
         self.Password = make_password(self.Password)
@@ -56,8 +55,11 @@ class User(AbstractBaseUser):
     is_staff = models.BooleanField(default=False)  # Add this line
     name = models.CharField(max_length=50, blank=True, null=True) 
     surname = models.CharField(max_length=50, blank=True, null=True) 
+    isDonor = models.BooleanField(default=False)
+    restaurant = models.CharField(max_length=100, blank=True, null=True)
     USERNAME_FIELD = 'username' 
     objects = CustomUserManager()
+
     
     def save(self, *args, **kwargs):
         if self.password and not self.password.startswith('pbkdf2_'):
@@ -65,7 +67,7 @@ class User(AbstractBaseUser):
         super(User, self).save(*args, **kwargs)
         
     @classmethod
-    def create_user(cls, username,is_superuser, email, password, phonenumber, name, surname,is_staff, is_active=False):
+    def create_user(cls, username, is_superuser, email, password, phonenumber, name, surname, is_staff, is_active=False, isDonor=False, restaurant=None):
         user = cls(
             username=username,
             email=email,
@@ -75,8 +77,9 @@ class User(AbstractBaseUser):
             surname=surname,
             is_active=is_active,
             is_staff=is_staff,
-            is_superuser=is_superuser
-            
+            is_superuser=is_superuser,
+            isDonor=isDonor,
+            restaurant=restaurant
         )
         user.save()
         return user
@@ -99,7 +102,7 @@ class User(AbstractBaseUser):
 
 class Donation(models.Model):
     id = models.AutoField(primary_key=True)  
-    restaurant = models.CharField(max_length=100, default='Unknown Restaurant')
+    restaurant = models.CharField(max_length=100, default='Unknown')
     item_name = models.CharField(max_length=100, default='Unknown Item')  
     quantity = models.FloatField(validators=[MinValueValidator(0.01)])  
     expiry_date = models.DateField()
@@ -118,14 +121,14 @@ class DonateOperations(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     reserved_at = models.DateTimeField(null=True, blank=True)
     @classmethod
-    def create_donate(cls, item_name, quantity, expiry_date):
+    def create_donate(cls, item_name, quantity, expiry_date,restaurant):
         if int(quantity) >= 100000:
             raise ValueError("Quantity is too high")
         if int(quantity) <= 0:
             raise ValueError("Quantity is too low")
         if datetime.strptime(expiry_date,"%Y-%m-%d").date() < date.today():
             raise ValueError("Expiry date is in the past")
-        donation = Donation(item_name=item_name,quantity=float(quantity)/1000, expiry_date=expiry_date)
+        donation = Donation(item_name=item_name, quantity=float(quantity)/1000, expiry_date=expiry_date, restaurant=restaurant)
         donation.save()
         return donation    
     @classmethod

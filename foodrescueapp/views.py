@@ -15,7 +15,7 @@ from django.utils.timezone import now
 
 
 def about(request):
-    return render(request, 'app/about.html')  # 'about.html', templates klasörünüzde bulunmalı
+    return render(request, 'app/about.html') 
 
 @csrf_exempt
 def admin_contact(request):
@@ -279,7 +279,7 @@ def create_donation_view(request):
         quantity = request.POST.get('quantity')
         expiry_date = request.POST.get('expiry_date')
         try:
-            models.DonateOperations.create_donate(item_name=item, quantity=quantity, expiry_date=expiry_date)
+            models.DonateOperations.create_donate(item_name=item, quantity=quantity, expiry_date=expiry_date,restaurant=request.user.restaurant)
             return render(request, 'app/donate.html', {
                 'success': 'Donation created successfully!',
                 'donations': models.DonateOperations.get_current_donations()
@@ -363,3 +363,39 @@ def donationDateControl(request,donation_id):
             donation.delete()
             return JsonResponse({'status': 'expired'})
         return JsonResponse({'status': 'valid'})
+    
+def registerDonor(request):
+    if request.method == 'POST':
+        firstname = request.POST['firstname']
+        lastname = request.POST['lastname']
+        username = request.POST['username']
+        password = request.POST['password']
+        repassword = request.POST['repassword']
+        email = request.POST['email']
+        phonenumber = request.POST['phonenumber']
+        restaurant = request.POST['restaurant']
+
+        if password == repassword:
+            if User.objects.filter(username=username).exists():
+                messages.error(request, 'Kullanıcı adı zaten alınmış.')
+            elif User.objects.filter(email=email).exists():
+                messages.error(request, 'E-posta zaten kullanılıyor.')
+            else:
+                user = models.User.create_user(
+                    username=username,
+                    email=email,
+                    password=password,
+                    phonenumber=phonenumber,
+                    name=firstname,
+                    surname=lastname,
+                    is_active=False,
+                    is_staff=False,
+                    is_superuser=False,
+                    isDonor=True,
+                    restaurant=restaurant
+                )
+                return redirect("login")
+        else:
+            messages.error(request, 'Şifreler eşleşmiyor.')
+
+    return render(request, 'account/registerDonor.html')

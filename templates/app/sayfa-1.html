@@ -93,7 +93,7 @@
               <a class="nav-link" href="{% url 'login' %}">Giriş Yap</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'register' %}">Kayıt Ol</a>
+              <a class="nav-link" href="#" id="registerLink">Kayıt Ol</a>
             </li>
             {% endif %}
           </ul>
@@ -468,7 +468,7 @@ c6.177,6.18,9.262,14.271,9.262,22.366C354.708,234.018,351.617,242.115,345.441,24
           </div>
           <div class="u-accordion-item">
             <a class="u-accordion-link u-border-1 u-border-active-grey-75 u-border-grey-15 u-border-hover-grey-75 u-border-no-left u-border-no-right u-border-no-top u-button-style u-text-black u-accordion-link-3" id="link-accordion-eb1f" aria-controls="accordion-eb1f" aria-selected="false">
-              <span class="u-accordion-link-text"> Gıdaların tazeliği nasıl garanti ediliyor?</span><span class="u-accordion-link-icon u-icon u-text-black u-icon-3"><svg class="u-svg-link" preserveAspectRatio="xMidYMin slice" viewBox="0 0 16 16" ><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#svg-e07d"></use></svg><svg class="u-svg-content" viewBox="0 0 16 16" x="0px" y="0px" id="svg-e07d" ><path d="M8,10.7L1.6,5.3c-0.4-0.4-1-0.4-1.3,0c-0.4,0.4-0.4,0.9,0,1.3l7.2,6.1c0.1,0.1,0.4,0.2,0.6,0.2s0.4-0.1,0.6-0.2l7.1-6
+              <span class="u-accordion-link-text"> Gıdaların tazeliği nasıl garanti ediliyor?</span><span class="u-accordion-link-icon u-icon u-text-black u-icon-3"><svg class="u-svg-link" preserveAspectRatio="xMidYMin slice" viewBox="0 0 16 16" ><use xlink:href="#svg-e07d"></use></svg><svg class="u-svg-content" viewBox="0 0 16 16" x="0px" y="0px" id="svg-e07d" ><path d="M8,10.7L1.6,5.3c-0.4-0.4-1-0.4-1.3,0c-0.4,0.4-0.4,0.9,0,1.3l7.2,6.1c0.1,0.1,0.4,0.2,0.6,0.2s0.4-0.1,0.6-0.2l7.1-6
 	c0.4-0.4,0.4-0.9,0-1.3c-0.4-0.4-1-0.4-1.3,0L8,10.7z"></path></svg></span>
             </a>
             <div class="u-accordion-pane u-container-style u-accordion-pane-3" id="accordion-eb1f" aria-labelledby="link-accordion-eb1f">
@@ -652,7 +652,7 @@ c6.177,6.18,9.262,14.271,9.262,22.366C354.708,234.018,351.617,242.115,345.441,24
               </div>
             </div>
             <div class="u-container-align-center u-container-style u-list-item u-repeater-item">
-              <div class="u-container-layout u-similar-container u-valign-middle u-container-layout-6"><span class="u-align-center u-icon u-text-grey-60 u-icon-6"><svg class="u-svg-link" preserveAspectRatio="xMidYMin slice" viewBox="0 0 200 200"><use xlink:href="#svg-cb0d"></use></svg><svg class="u-svg-content" viewBox="0 0 200 200" x="0px" y="0px" id="svg-cb0d"><polygon points="22.66,131.13 78.91,18.64 92.97,18.64 36.72,131.13 "></polygon><polygon points="92.97,74.88 64.85,131.13 50.78,131.13 78.91,74.88 "></polygon><polygon points="177.34,131.13 121.09,18.64 107.03,18.64 163.28,131.13 "></polygon><polygon points="121.09,74.88 107.03,74.88 78.91,18.63 92.97,18.63 "></polygon><polygon points="149.22,131.13 135.15,131.13 114.06,88.94 128.12,88.94 "></polygon><rect x="75.97" y="88.94" width="75.05" height="14.06"></rect><path d="M36.63,172.55c-1.04,0.52-3.11,1.04-5.77,1.04c-6.16,0-10.79-3.89-10.79-11.05c0-6.84,4.63-11.47,11.41-11.47
+              <div class="u-container-layout u-similar-container u-valign-middle u-container-layout-6"><span class="u-align-center u-icon u-text-grey-60 u-icon-6"><svg class="u-svg-link" preserveAspectRatio="xMidYMin slice" viewBox="0 0 200 200" ><use xlink:href="#svg-cb0d"></use></svg><svg class="u-svg-content" viewBox="0 0 200 200" x="0px" y="0px" id="svg-cb0d"><polygon points="22.66,131.13 78.91,18.64 92.97,18.64 36.72,131.13 "></polygon><polygon points="92.97,74.88 64.85,131.13 50.78,131.13 78.91,74.88 "></polygon><polygon points="177.34,131.13 121.09,18.64 107.03,18.64 163.28,131.13 "></polygon><polygon points="121.09,74.88 107.03,74.88 78.91,18.63 92.97,18.63 "></polygon><polygon points="149.22,131.13 135.15,131.13 114.06,88.94 128.12,88.94 "></polygon><rect x="75.97" y="88.94" width="75.05" height="14.06"></rect><path d="M36.63,172.55c-1.04,0.52-3.11,1.04-5.77,1.04c-6.16,0-10.79-3.89-10.79-11.05c0-6.84,4.63-11.47,11.41-11.47
 			c2.72,0,4.44,0.58,5.19,0.97l-0.68,2.3c-1.07-0.52-2.59-0.91-4.41-0.91c-5.12,0-8.52,3.27-8.52,9.01c0,5.35,3.08,8.78,8.39,8.78
 			c1.72,0,3.47-0.36,4.6-0.91L36.63,172.55z"></path><path d="M61.4,162.12c0,7.52-4.57,11.51-10.14,11.51c-5.77,0-9.82-4.47-9.82-11.08c0-6.94,4.31-11.47,10.14-11.47
 			C57.54,151.06,61.4,155.63,61.4,162.12z M44.44,162.47c0,4.67,2.53,8.85,6.97,8.85c4.47,0,7-4.12,7-9.08
@@ -924,4 +924,67 @@ c6.177,6.18,9.262,14.271,9.262,22.366C354.708,234.018,351.617,242.115,345.441,24
       </p>
     </footer>
   
+    <div id="userTypeModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); justify-content: center; align-items: center;">
+      <div id="modalContent" style="background: white; padding: 20px; border-radius: 10px; text-align: center;">
+        <p>Hangi tür kullanıcı olarak kayıt olmak istersiniz?</p>
+        <button id="donorButton" class="modal-button">Restoran Sahibi</button>
+        <button id="customerButton" class="modal-button">Müşteri</button>
+      </div>
+    </div>
+    
+    <style>
+      .modal-button {
+        margin: 5px;
+        padding: 10px;
+        background: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        width: 150px; /* Sabit genişlik */
+        height: 50px; /* Sabit yükseklik */
+        display: inline-block;
+        text-align: center;
+        cursor: pointer;
+        font-size: 16px; /* Yazı boyutunu aynı yap */
+        transition: background 0.3s;
+      }
+    
+      #customerButton {
+        background: #2196F3; /* Müşteri buton rengi */
+      }
+    
+      .modal-button:hover {
+        background: #3e8e41; /* Hover efekti (Donor için) */
+      }
+    
+      #customerButton:hover {
+        background: #1976D2; /* Hover efekti (Müşteri için) */
+      }
+    </style>
+    
+    <script>
+      // Kayıt ol linkine tıklanınca modal'ı aç
+      document.getElementById('registerLink').addEventListener('click', function(event) {
+        event.preventDefault();
+        document.getElementById('userTypeModal').style.display = 'flex';
+      });
+    
+      // Donor butonuna tıklanınca yönlendir
+      document.getElementById('donorButton').addEventListener('click', function() {
+        window.location.href = "{% url 'registerDonor' %}";
+      });
+    
+      // Müşteri butonuna tıklanınca yönlendir
+      document.getElementById('customerButton').addEventListener('click', function() {
+        window.location.href = "{% url 'register' %}";
+      });
+    
+      // Modal arka planına tıklanınca kapat
+      document.getElementById('userTypeModal').addEventListener('click', function(event) {
+        // Eğer tıklama modal'ın içeriği dışında bir yere yapıldıysa kapat
+        if (event.target.id === 'userTypeModal') {
+          document.getElementById('userTypeModal').style.display = 'none';
+        }
+      });
+    </script>
 </body></html>
