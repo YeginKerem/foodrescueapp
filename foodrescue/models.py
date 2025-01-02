@@ -128,7 +128,7 @@ class DonateOperations(models.Model):
             raise ValueError("Quantity is too low")
         if datetime.strptime(expiry_date,"%Y-%m-%d").date() < date.today():
             raise ValueError("Expiry date is in the past")
-        donation = Donation(item_name=item_name, quantity=float(quantity)/1000, expiry_date=expiry_date, restaurant=restaurant)
+        donation = Donation(item_name=item_name, quantity=round(float(quantity) / 1000, 2), expiry_date=expiry_date, restaurant=restaurant)
         donation.save()
         return donation    
     @classmethod
@@ -192,3 +192,21 @@ class Feedback2(models.Model):
         verbose_name = 'Feedback'
         verbose_name_plural = 'Feedbacks'
         ordering = ['-created_at']
+class DeletedDonationLogs(models.Model):
+    donation = models.ForeignKey(Donation, on_delete=models.SET_NULL, null=True, blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    donation_deleted_at = models.DateTimeField(null=True, blank=True)
+    description = models.CharField(max_length=150,null=True, blank=True)
+    @classmethod
+    def create_donation_log(cls, donation, description,user):
+        donation = donation    
+        donation_log = cls(
+            
+            donation=donation,
+            description=description,
+            user=user,
+            donation_deleted_at=datetime.now(),
+        )
+        donation_log.save()
+        return donation_log
+            

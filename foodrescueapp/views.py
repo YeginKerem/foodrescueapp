@@ -263,6 +263,8 @@ def manage_reservation(request, donation_id):
         
         elif 'mark_received' in request.POST:  # Teslim Aldım butonu gönderildiyse
             if donation.is_reserved and donation.reserved_by == request.user:
+                description = f"Bağış '{request.user.username.title()}' Tarafından Teslim Alındı: {donation.item_name} - {donation.quantity} kg - {donation.expiry_date}"
+                models.DeletedDonationLogs.create_donation_log(donation,description, request.user)
                 donation.delete()
                 messages.success(request, 'Bağış teslim alındı ve silindi.')
             else:
@@ -278,6 +280,7 @@ def create_donation_view(request):
         item = request.POST.get('item')
         quantity = request.POST.get('quantity')
         expiry_date = request.POST.get('expiry_date')
+        item = item.title()
         try:
             models.DonateOperations.create_donate(item_name=item, quantity=quantity, expiry_date=expiry_date,restaurant=request.user.restaurant)
             return render(request, 'app/donate.html', {
@@ -300,6 +303,8 @@ def create_donation_view(request):
 
 def delete_donation_view(request, donation_id):
     donation = get_object_or_404(models.Donation, id=donation_id)
+    description = f"Bağış '{request.user.username.title()}' Tarafından  silindi: {donation.item_name} - {donation.quantity} kg - {donation.expiry_date}"
+    models.DeletedDonationLogs.create_donation_log(donation,description, request.user)
     donation.delete()
     messages.success(request, 'Bağış başarıyla silindi.')
     return redirect('create_donation_view')
